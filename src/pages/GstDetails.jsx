@@ -161,7 +161,7 @@ const GstDetails = () => {
           </p>
           <br />
           <p className="text-gray-700">
-          For goods moving between states (interstate): A single IGST is applied, collected by the central government and then distributed to both the sending and receiving states.
+          For goods moving between states (interstate): A single IGST is applied, collected by the central government and then distributed to both the sending and receiving states.
           </p>
           <br />
           
