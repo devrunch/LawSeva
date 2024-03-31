@@ -1,8 +1,8 @@
-import { useState } from "react"
-import img1 from '../assets/img/11668660_20945248 1.png'
-import img2 from '../assets/img/Invoice-amico (1) 1.png'
-const GstDetails = () => {
+import { useState } from "react";
+import img1 from '../assets/img/11668660_20945248 1.png';
+import img2 from '../assets/img/Invoice-amico (1) 1.png';
 
+const GstDetails = () => {
   function customRound(number) {
     let rounded = Math.round(number * 100) / 100; // Round to two decimal places
     if (rounded % 1 === 0) { // If the rounded number is a whole number
@@ -11,42 +11,43 @@ const GstDetails = () => {
     return rounded;
   }
   const [actualAmount, setActualAmount] = useState(0.0);
-  const [totalAmount, setToatalAmount] = useState(0.0);
+  const [totalAmount, setTotalAmount] = useState(0.0);
   const [gstAmount, setGstAmount] = useState(0.0);
   const [tax, setTax] = useState(12.0);
+
   const taxChange = (e) => {
     let gst = (e.target.value / 100) * actualAmount;
     setGstAmount(gst);
-    setToatalAmount(parseInt(actualAmount) + gst);
+    setTotalAmount(parseInt(actualAmount) + gst);
   }
+
   const actChange = (e) => {
     setActualAmount(e.target.value);
     if (tax > 0) {
       let gst = (tax / 100) * e.target.value;
       setGstAmount(gst);
-      setToatalAmount(parseInt(e.target.value) + gst);
+      setTotalAmount(parseInt(e.target.value) + gst);
     }
   }
+
   const gstChange = (e) => {
     if (tax > 0) {
       setGstAmount(e.target.value);
-      console.log(e.target.value)
-      // console.log(gstAmount)
       let act = e.target.value / (tax / 100);
       setActualAmount(act);
       let total = act + parseInt(e.target.value);
-      setToatalAmount(total);
+      setTotalAmount(total);
     }
   }
+
   const totChange = (e) => {
-    setToatalAmount(e.target.value);
+    setTotalAmount(e.target.value);
     let act = e.target.value / (1 + (tax / 100));
-    console.log(Math.round(act))
     setActualAmount(customRound(act))
     let gst = act * (tax / 100)
     setGstAmount(customRound(gst));
-
   }
+
   return (
     <>
       <div className="bg-[#2d3dc5] container text-center p-14">
@@ -58,10 +59,10 @@ const GstDetails = () => {
         </p>
       </div>
       <div className="half-colored p-4">
-        <div className="bg-slate-200 drop-shadow-md w-1/2 p-11 m-auto rounded-md font-bold flex flex-col gap-y-3" >
+        <div className="bg-slate-200 drop-shadow-md w-full md:w-1/2 p-11 m-auto rounded-md font-bold flex flex-col gap-y-3 " >
           <div>
             <label htmlFor="" className="font-sans font-bold">Select GST%</label><br />
-            <div className="flex justify-between mt-2 flex-wrap">
+            <div className="flex gap-x-10 mt-2 flex-wrap">
               <div className="custom-radio">
                 <input type="radio" id="GST0.25" name="GST" value={0.25} onClick={(e) => {
                   setTax(0.25);
@@ -104,6 +105,7 @@ const GstDetails = () => {
                 }} checked={tax == 28.0} />
                 <label htmlFor="GST28">28%</label>
               </div>
+
             </div>
           </div>
           <div>
@@ -131,7 +133,7 @@ const GstDetails = () => {
           </div>
         </div>
       </div>
-      <div className=" p-4 container m-auto flex justify-center align-middle w-4/5 ">
+      <div className=" p-4 container m-auto flex justify-center align-middle w-full md:w-4/5">
         <div className="m-auto">
           <h2 className="text-xl font-bold mb-2">GST - the Goods and Services Tax</h2>
           <p className="text-gray-700">
@@ -150,25 +152,25 @@ const GstDetails = () => {
           <img src={img1} alt="" width={800} />
         </div>
       </div>
-      <div className=" p-4 container m-auto flex justify-around align-middle w-4/5 ">
+      <div className=" p-4 container m-auto flex justify-around align-middle w-full md:w-4/5 ">
         <div className="mr-8">
           <img src={img2} alt="" width={500} />
         </div>
         <div className="m-auto">
           <h2 className="text-xl font-bold mb-2">There are four types of GST.</h2>
           <p className="text-gray-700">
-          For goods bought within the same state (intrastate): GST is split into two parts - SGST (collected by the state) and CGST (collected by the central government).
+            For goods bought within the same state (intrastate): GST is split into two parts - SGST (collected by the state) and CGST (collected by the central government).
           </p>
           <br />
           <p className="text-gray-700">
-          For goods moving between states (interstate): A single IGST is applied, collected by the central government and then distributed to both the sending and receiving states.
+            For goods moving between states (interstate): A single IGST is applied, collected by the central government and then distributed to both the sending and receiving states.
           </p>
           <br />
           
         </div>
       </div>
     </>
-  )
+  );
 }
 
-export default GstDetails
+export default GstDetails;

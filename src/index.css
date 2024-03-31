@@ -40,7 +40,7 @@
   height: 50px;
   border: 2px solid rgb(107 114 128);
   border-radius: 10%;
-  margin-right: 10px;
+  /* margin-right: 0; */
   cursor: pointer;
   transition: ease-in 0.2s;
 }
