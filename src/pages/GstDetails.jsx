@@ -4,7 +4,7 @@ import img2 from '../assets/img/Invoice-amico (1) 1.png';
 
 const GstDetails = () => {
   function customRound(number) {
-    let rounded = Math.round(number * 100) / 100; // Round to two decimal places
+    let rounded = Math.round(number * 1000) / 1000; // Round to two decimal places
     if (rounded % 1 === 0) { // If the rounded number is a whole number
       return Math.ceil(number); // Round up to the nearest whole number
     }
@@ -17,16 +17,16 @@ const GstDetails = () => {
 
   const taxChange = (e) => {
     let gst = (e.target.value / 100) * actualAmount;
-    setGstAmount(gst);
-    setTotalAmount(parseInt(actualAmount) + gst);
+    setGstAmount(customRound(gst));
+    setTotalAmount(customRound(parseInt(actualAmount) + gst));
   }
 
   const actChange = (e) => {
     setActualAmount(e.target.value);
     if (tax > 0) {
       let gst = (tax / 100) * e.target.value;
-      setGstAmount(gst);
-      setTotalAmount(parseInt(e.target.value) + gst);
+      setGstAmount(customRound(gst));
+      setTotalAmount(customRound(parseInt(e.target.value) + gst));
     }
   }
 
@@ -34,9 +34,9 @@ const GstDetails = () => {
     if (tax > 0) {
       setGstAmount(e.target.value);
       let act = e.target.value / (tax / 100);
-      setActualAmount(act);
+      setActualAmount(customRound(act));
       let total = act + parseInt(e.target.value);
-      setTotalAmount(total);
+      setTotalAmount(customRound(total));
     }
   }
 
@@ -67,42 +67,42 @@ const GstDetails = () => {
                 <input type="radio" id="GST0.25" name="GST" value={0.25} onClick={(e) => {
                   setTax(0.25);
                   taxChange(e)
-                }} checked={tax == 0.25} />
+                }}  />
                 <label htmlFor="GST0.25" className="w-14 h-10">0.25%</label>
               </div>
               <div className="custom-radio">
                 <input type="radio" id="GST3" name="GST" value={3} onClick={(e) => {
                   setTax(3.0)
                   taxChange(e)
-                }} checked={tax == 3.0} />
+                }} />
                 <label htmlFor="GST3" className="w-14 h-10">3%</label>
               </div>
               <div className="custom-radio">
                 <input type="radio" id="GST5" name="GST" value={5} onClick={(e) => {
                   setTax(5.0)
                   taxChange(e)
-                }} checked={tax == 5.0} />
+                }}  />
                 <label htmlFor="GST5" className="w-14 h-10">5%</label>
               </div>
               <div className="custom-radio">
                 <input type="radio" id="GST12" name="GST" value={12} onClick={(e) => {
                   setTax(12.0)
                   taxChange(e)
-                }} checked={tax == 12.0} />
+                }} defaultChecked />
                 <label htmlFor="GST12" className="w-14 h-10">12%</label>
               </div>
               <div className="custom-radio">
                 <input type="radio" id="GST18" name="GST" value={18} onClick={(e) => {
                   setTax(18.0)
                   taxChange(e)
-                }} checked={tax == 18.0} />
+                }} />
                 <label htmlFor="GST18" className="w-14 h-10">18%</label>
               </div>
               <div className="custom-radio">
                 <input type="radio" id="GST28" name="GST" value={28} onClick={(e) => {
                   setTax(28.0)
                   taxChange(e)
-                }} checked={tax == 28.0} />
+                }}  />
                 <label htmlFor="GST28" className="w-14 h-10">28%</label>
               </div>
 
