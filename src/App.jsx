@@ -1,4 +1,5 @@
 import GstDetails from "./pages/GstDetails"
+import TaxPayer from "./pages/TaxPayer"
 
 
 function App() {
@@ -6,7 +7,8 @@ function App() {
 
   return (
     <>
-    <GstDetails/>
+    {/* <GstDetails/> */}
+    <TaxPayer/>
     </>
   )
 }

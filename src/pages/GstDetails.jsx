@@ -13,7 +13,7 @@ const GstDetails = () => {
   const [actualAmount, setActualAmount] = useState(0.0);
   const [totalAmount, setTotalAmount] = useState(0.0);
   const [gstAmount, setGstAmount] = useState(0.0);
-  const [tax, setTax] = useState(12.0);
+  const [tax, setTax] = useState(18.0);
 
   const taxChange = (e) => {
     let gst = (e.target.value / 100) * actualAmount;
@@ -88,14 +88,14 @@ const GstDetails = () => {
                 <input type="radio" id="GST12" name="GST" value={12} onClick={(e) => {
                   setTax(12.0)
                   taxChange(e)
-                }} defaultChecked />
+                }} />
                 <label htmlFor="GST12" className="w-14 h-10">12%</label>
               </div>
               <div className="custom-radio">
                 <input type="radio" id="GST18" name="GST" value={18} onClick={(e) => {
                   setTax(18.0)
                   taxChange(e)
-                }} />
+                }} defaultChecked/>
                 <label htmlFor="GST18" className="w-14 h-10">18%</label>
               </div>
               <div className="custom-radio">
@@ -152,7 +152,7 @@ const GstDetails = () => {
           <img src={img1} alt="" width={800} />
         </div>
       </div>
-      <div className=" p-4 container m-auto flex justify-around items-center flex-wrap w-full md:w-4/5 flex-wrap-reverse ">
+      <div className=" p-4 container m-auto flex justify-around items-center w-full md:w-4/5 flex-wrap-reverse ">
         <div className="w-64 md:w-1/4">
           <img src={img2} alt="" width={500} />
         </div>
