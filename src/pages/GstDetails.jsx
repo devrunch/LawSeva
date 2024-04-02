@@ -1,14 +1,11 @@
 import { useState } from "react";
+import bigDecimal from 'js-big-decimal';
 import img1 from '../assets/img/11668660_20945248 1.png';
 import img2 from '../assets/img/Invoice-amico (1) 1.png';
 
 const GstDetails = () => {
   function customRound(number) {
-    let rounded = Math.round(number * 1000) / 1000; // Round to two decimal places
-    if (rounded % 1 === 0) { // If the rounded number is a whole number
-      return Math.ceil(number); // Round up to the nearest whole number
-    }
-    return rounded;
+    return bigDecimal.round(number, 2);
   }
   const [actualAmount, setActualAmount] = useState(0.0);
   const [totalAmount, setTotalAmount] = useState(0.0);
@@ -24,27 +21,27 @@ const GstDetails = () => {
   const actChange = (e) => {
     setActualAmount(e.target.value);
     if (tax > 0) {
-      let gst = (tax / 100) * e.target.value;
+      let gst = bigDecimal.multiply(e.target.value, tax / 100) ; 
       setGstAmount(customRound(gst));
-      setTotalAmount(customRound(parseInt(e.target.value) + gst));
+      setTotalAmount(customRound(bigDecimal.add(e.target.value , gst)));
     }
   }
 
   const gstChange = (e) => {
     if (tax > 0) {
       setGstAmount(e.target.value);
-      let act = e.target.value / (tax / 100);
+      let act = bigDecimal.divide(e.target.value,(tax / 100));
       setActualAmount(customRound(act));
-      let total = act + parseInt(e.target.value);
+      let total = bigDecimal.add( act , parseInt(e.target.value));
       setTotalAmount(customRound(total));
     }
   }
 
   const totChange = (e) => {
     setTotalAmount(e.target.value);
-    let act = e.target.value / (1 + (tax / 100));
+    let act = bigDecimal.divide( e.target.value , bigDecimal.add(1 , (tax / 100)));
     setActualAmount(customRound(act))
-    let gst = act * (tax / 100)
+    let gst = bigDecimal.multiply(act,(tax / 100))
     setGstAmount(customRound(gst));
   }
 
