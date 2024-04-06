@@ -56,7 +56,7 @@ const GstDetails = () => {
         </p>
       </div>
       <div className="half-colored p-4">
-        <div className="bg-[#D1D8E2] text-[#222222] drop-shadow-md w-full md:w-1/2 p-11 m-auto rounded-md font-bold flex flex-col gap-y-3 " >
+        <div className="bg-[#ffffff] text-[#222222] drop-shadow-xl w-full md:w-1/2 p-11 m-auto rounded-md font-bold flex flex-col gap-y-3 " >
           <div>
             <label htmlFor="" className="font-sans font-bold">Select GST%</label><br />
             <div className="flex gap-x-8 mt-2 flex-wrap xl:justify-between">
@@ -114,18 +114,18 @@ const GstDetails = () => {
           </div> */}
           <div className="flex flex-col flex-wrap" >
             <label htmlFor="">Actual Amount</label>
-            <input type="number" className="text-3xl mt-2 w-full h-16 rounded-md p-2 bg-[#D1D8E2] border-solid border-2 border-[#828992]  " value={actualAmount} onChange={(e) => {
+            <input type="number" className="text-3xl mt-2 w-full h-16 rounded-md p-2 bg-[#ffffff] border-solid border-2 border-[#828992]  " placeholder="0"  onChange={(e) => {
               actChange(e)
             }} />
           </div>
 
           <div className="w-full">
             <label htmlFor="">GST Amount</label>
-            <input type="number" className="text-3xl mt-2 w-full h-16 rounded-md p-2 bg-[#D1D8E2] border-solid border-2 border-[#828992]" value={gstAmount} onChange={(e) => gstChange(e)} />
+            <input type="number" className="text-3xl mt-2 w-full h-16 rounded-md p-2 bg-[#ffffff] border-solid border-2 border-[#828992]" placeholder="0"  onChange={(e) => gstChange(e)} />
           </div>
           <div className="w-full">
             <label htmlFor="">Total Amount</label>
-            <input type="number" className="text-3xl mt-2 w-full h-16 rounded-md p-2 bg-[#D1D8E2] border-solid border-2 border-[#828992]" value={totalAmount} onChange={(e) => totChange(e)} />
+            <input type="number" className="text-3xl mt-2 w-full h-16 rounded-md p-2 bg-[#ffffff] border-solid border-2 border-[#828992]" placeholder="0" onChange={(e) => totChange(e)} />
           </div>
 
         </div>

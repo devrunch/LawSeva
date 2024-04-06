@@ -45,8 +45,9 @@
 }
 
 .custom-radio input[type="radio"]:checked+label {
-  border-color: #18bae7;
-  color: #31A6C7;
+  border-color: #0c8bae;
+  color: #0c8bae;
+  text-shadow: 0px 0px 1px #0c8bae;
 }
 /* input{
   font-size: 25px;
