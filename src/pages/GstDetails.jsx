@@ -7,9 +7,9 @@ const GstDetails = () => {
   function customRound(number) {
     return bigDecimal.round(number, 2);
   }
-  const [actualAmount, setActualAmount] = useState(0.0);
-  const [totalAmount, setTotalAmount] = useState(0.0);
-  const [gstAmount, setGstAmount] = useState(0.0);
+  const [actualAmount, setActualAmount] = useState();
+  const [totalAmount, setTotalAmount] = useState();
+  const [gstAmount, setGstAmount] = useState();
   const [tax, setTax] = useState(18.0);
 
   const taxChange = (e) => {
@@ -114,18 +114,20 @@ const GstDetails = () => {
           </div> */}
           <div className="flex flex-col flex-wrap" >
             <label htmlFor="">Actual Amount</label>
-            <input type="number" className="text-3xl mt-2 w-full h-16 rounded-md p-2 bg-[#ffffff] border-solid border-2 border-[#828992]  " placeholder="0"  onChange={(e) => {
+            <input type="number" className="text-3xl mt-2 w-full h-16 rounded-md p-2 bg-[#ffffff] border-solid border-2 border-[#828992]  " placeholder="0"  
+            value={actualAmount}
+            onChange={(e) => {
               actChange(e)
             }} />
           </div>
 
           <div className="w-full">
             <label htmlFor="">GST Amount</label>
-            <input type="number" className="text-3xl mt-2 w-full h-16 rounded-md p-2 bg-[#ffffff] border-solid border-2 border-[#828992]" placeholder="0"  onChange={(e) => gstChange(e)} />
+            <input type="number" className="text-3xl mt-2 w-full h-16 rounded-md p-2 bg-[#ffffff] border-solid border-2 border-[#828992]" placeholder="0" value={gstAmount}  onChange={(e) => gstChange(e)} />
           </div>
           <div className="w-full">
             <label htmlFor="">Total Amount</label>
-            <input type="number" className="text-3xl mt-2 w-full h-16 rounded-md p-2 bg-[#ffffff] border-solid border-2 border-[#828992]" placeholder="0" onChange={(e) => totChange(e)} />
+            <input type="number" className="text-3xl mt-2 w-full h-16 rounded-md p-2 bg-[#ffffff] border-solid border-2 border-[#828992]" placeholder="0" value={totalAmount} onChange={(e) => totChange(e)} />
           </div>
 
         </div>
