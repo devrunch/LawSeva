@@ -56,7 +56,7 @@ const TaxPayer = () => {
                                     Search
                                 </button>
                             </div>
-                            {isValid && <p>Valid GST Number</p>}
+                            {isValid && <p className="text-green-600">Valid GST Number</p>}
                             {!isValid && gstNumber.length > 0 && <p className="text-red-600">Please enter a valid GST Number*</p>}
                         </form>
                         <div className=" w-5/6 px-12 m-auto my-8 pt-14 pb-2 shadow-md rounded border border-grey-250 flex flex-wrap sm:pt-6 sm:px-6">
