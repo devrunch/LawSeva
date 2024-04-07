@@ -7,8 +7,8 @@ function App() {
 
   return (
     <>
-    <GstDetails/>
-    {/* <TaxPayer/> */}
+    {/* <GstDetails/> */}
+    <TaxPayer/>
     </>
   )
 }

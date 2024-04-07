@@ -1,11 +1,11 @@
 import { useState } from "react";
 import gstFormat from '../assets/img/Screenshot 2024-04-06 140242.png';
-import gstDetails from '../data/gstDetails.json'
+// import gstDetails from '../data/gstDetails.json'
 import filingInfo from '../data/fillingDetails.json'
 const TaxPayer = () => {
     const [gstNumber, setGSTNumber] = useState('');
     const [isValid, setIsValid] = useState(false);
-
+    const [gstDetails, setGstDetails] = useState()
     const verifyGSTNumber = (gst) => {
 
         const gstRegex = /^(\d{2})([A-Z]{5})(\d{4})([A-Z]{1})(\d{1})([A-Z\d]{1})([A-Z\d]{1})$/;
@@ -22,6 +22,38 @@ const TaxPayer = () => {
         verifyGSTNumber(e.target.value);
     };
 
+    const searchGst = async () => {
+        console.log("searching gst")
+
+        const myHeaders = new Headers();
+        myHeaders.append("MVApiKey", "OvN4x7MuxS7iWEJ");
+        myHeaders.append("MVSecretKey", "NnMDFUyNfcUMgwwvD225bA==");
+        myHeaders.append("GSTIN", "09AAECL1834A1ZX");
+        myHeaders.append("Content-Type", "application/json");
+
+        const raw = JSON.stringify({
+            "AppSCommonSearchTPItem": [
+                {
+                    "GSTIN": gstNumber
+                }
+            ]
+        });
+
+        const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow"
+        };
+
+        await fetch("https://www.ewaybills.com/MVEWBAuthenticate/MVAppSCommonSearchTP", requestOptions)
+            .then((response) => response.text())
+            .then((result) => setGstDetails(JSON.parse(result)))
+            .catch((error) => console.error(error));
+
+    }
+
+
     return (
         <>
             <div className="w-full bg-white p-2 md:p-8 ">
@@ -33,7 +65,7 @@ const TaxPayer = () => {
                     <div>
 
 
-                        <form className="max-w-3xl  my-8    ">
+                        <form className="max-w-3xl  my-8" onSubmit={(e)=>{e.preventDefault() ; searchGst()}} >
                             <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only ">Search</label>
                             <div className="relative">
                                 <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -44,7 +76,7 @@ const TaxPayer = () => {
                                 <input
                                     type="search"
                                     id="default-search"
-                                    className="block text-xl w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 "
+                                    className="block text-xl w-full p-4 ps-10 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 "
                                     placeholder="Enter GSTIN/UIN of the Taxpayer"
                                     onChange={(e) => handleGstVerify(e)}
                                     required
@@ -59,57 +91,61 @@ const TaxPayer = () => {
                             {isValid && <p className="text-green-600">Valid GST Number</p>}
                             {!isValid && gstNumber.length > 0 && <p className="text-red-600">Please enter a valid GST Number*</p>}
                         </form>
-                        <div className=" w-5/6 px-12 m-auto my-8 pt-14 pb-2 shadow-md rounded border border-grey-250 flex flex-wrap sm:pt-6 sm:px-6">
-                            <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
-                                <span className="anchor sm:hidden" id="Business Name"></span>
-                                <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Business Name</h4>
-                                <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].lgnm}</small>
+
+
+                        {gstDetails &&
+                            <div className=" w-5/6 px-12 m-auto my-8 pt-14 pb-2 shadow-md rounded border border-grey-250 flex flex-wrap sm:pt-6 sm:px-6">
+                                <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
+                                    <span className="anchor sm:hidden" id="Business Name"></span>
+                                    <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Business Name</h4>
+                                    <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].lgnm}</small>
+                                </div>
+                                <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
+                                    <span className="anchor sm:hidden" id="PAN"></span>
+                                    <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">PAN</h4>
+                                    <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstNumber.slice(2, 12)}</small>
+                                </div>
+                                <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
+                                    <span className="anchor sm:hidden" id="Address"></span>
+                                    <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Address</h4>
+                                    <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].adadr[0].addr.stcd}</small>
+                                </div>
+                                <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
+                                    <span className="anchor sm:hidden" id="Entity Type"></span>
+                                    <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Entity Type</h4>
+                                    <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].ctb}</small>
+                                </div>
+                                <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
+                                    <span className="anchor sm:hidden" id="Nature of business"></span>
+                                    <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Nature of business</h4>
+                                    <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].nba[0]}</small>
+                                </div>
+                                <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
+                                    <span className="anchor sm:hidden" id="Pincode"></span>
+                                    <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Pincode</h4>
+                                    <small className="text-s-20 text-font-500 font-medium sm:text-base">411018</small>
+                                </div>
+                                <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
+                                    <span className="anchor sm:hidden" id="Department Code"></span>
+                                    <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Department Code</h4>
+                                    <small className="text-s-20 text-font-500 font-medium sm:text-base">RANGE-V</small>
+                                </div>
+                                <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
+                                    <span className="anchor sm:hidden" id="Registration Type"></span>
+                                    <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Registration Type</h4>
+                                    <small className="text-s-20 text-font-500 font-medium sm:text-base">Regular</small>
+                                </div>
+                                <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
+                                    <span className="anchor sm:hidden" id="Registration Date"></span>
+                                    <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Registration Date</h4>
+                                    <small className="text-s-20 text-font-500 font-medium sm:text-base">01/07/2017</small>
+                                </div>
+                                <button type="button" className=" text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 me-2 mb-2">See Filing Table</button>
                             </div>
-                            <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
-                                <span className="anchor sm:hidden" id="PAN"></span>
-                                <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">PAN</h4>
-                                <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstNumber.slice(2, 12)}</small>
-                            </div>
-                            <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
-                                <span className="anchor sm:hidden" id="Address"></span>
-                                <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Address</h4>
-                                <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].adadr[0].addr.stcd}</small>
-                            </div>
-                            <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
-                                <span className="anchor sm:hidden" id="Entity Type"></span>
-                                <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Entity Type</h4>
-                                <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].ctb}</small>
-                            </div>
-                            <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
-                                <span className="anchor sm:hidden" id="Nature of business"></span>
-                                <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Nature of business</h4>
-                                <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].nba[0]}</small>
-                            </div>
-                            <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
-                                <span className="anchor sm:hidden" id="Pincode"></span>
-                                <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Pincode</h4>
-                                <small className="text-s-20 text-font-500 font-medium sm:text-base">411018</small>
-                            </div>
-                            <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
-                                <span className="anchor sm:hidden" id="Department Code"></span>
-                                <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Department Code</h4>
-                                <small className="text-s-20 text-font-500 font-medium sm:text-base">RANGE-V</small>
-                            </div>
-                            <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
-                                <span className="anchor sm:hidden" id="Registration Type"></span>
-                                <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Registration Type</h4>
-                                <small className="text-s-20 text-font-500 font-medium sm:text-base">Regular</small>
-                            </div>
-                            <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
-                                <span className="anchor sm:hidden" id="Registration Date"></span>
-                                <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Registration Date</h4>
-                                <small className="text-s-20 text-font-500 font-medium sm:text-base">01/07/2017</small>
-                            </div>
-                            <button type="button" className=" text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 me-2 mb-2">See Filing Table</button>
-                        </div>
+                        }
                         <div className="flex gap-y-10 items-center justify-evenly flex-wrap my-12 mx-auto w-[95%]">
 
-                        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+                            <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                                 <h1 className="m-2 text-lg font-bold">Period : 2018-19 | GSTR3B</h1>
                                 <table className="w-full text-lg text-left rtl:text-right text-gray-500">
                                     <thead className="text-sm text-gray-700 uppercase bg-gray-50 ">
@@ -144,7 +180,7 @@ const TaxPayer = () => {
 
                                     </tbody>
                                 </table>
-                            </div>                       
+                            </div>
                         </div>
                         <h1 className="text-3xl font-bold">What is GSTIN?</h1>
                         <p className="text-lg mt-3 md:w-4/5">GSTIN is the GST identification number or GST number. A GSTIN is a 15-digit PAN-based unique identification number allotted to every registered person under GST. As a GST-registered dealer, you might want to do a GST verification before entering it into your GST Returns. You can use the GST number check tool to do GST number (GSTIN) verification.</p>
