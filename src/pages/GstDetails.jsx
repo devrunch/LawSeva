@@ -13,17 +13,17 @@ const GstDetails = () => {
   const [tax, setTax] = useState(18.0);
 
   const taxChange = (e) => {
-    let gst = (e.target.value / 100) * actualAmount;
+    let gst = bigDecimal.multiply(bigDecimal.divide(e.target.value , 100) , actualAmount);
     setGstAmount(customRound(gst));
-    setTotalAmount(customRound(parseInt(actualAmount) + gst));
+    setTotalAmount(customRound(bigDecimal.add(parseInt(actualAmount) , gst)));
   }
 
   const actChange = (e) => {
     setActualAmount(e.target.value);
     if (tax > 0) {
       let gst = bigDecimal.multiply(e.target.value, tax / 100) ; 
-      setGstAmount(customRound(gst));
-      setTotalAmount(customRound(bigDecimal.add(e.target.value , gst)));
+      setGstAmount(()=>customRound(gst));
+      setTotalAmount(()=>customRound(bigDecimal.add(e.target.value , gst)));
     }
   }
 
