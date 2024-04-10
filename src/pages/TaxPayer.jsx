@@ -173,7 +173,9 @@ const TaxPayer = () => {
                                 />
                                 <button
                                     type="submit"
-                                    className={`text-white text-lg absolute end-2.5 bottom-[10px] bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded px-4 py-2 ${!isValid ? 'opacity-50 cursor-not-allowed' : ''} `}
+                                    className={`z-20 text-white text-lg absolute end-2.5 bottom-[10px] bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded px-4 py-2 ${!isValid ? ' cursor-not-allowed' : ''} ` 
+                                }
+                                disabled={!isValid} 
                                 >
                                     Search
                                 </button>
