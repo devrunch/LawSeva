@@ -64,9 +64,9 @@ const TaxPayer = () => {
         setLoadingGstDetails(true)
 
         const myHeaders = new Headers();
-        myHeaders.append("MVApiKey", "OvN4x7MuxS7iWEJ");
-        myHeaders.append("MVSecretKey", "NnMDFUyNfcUMgwwvD225bA==");
-        myHeaders.append("GSTIN", "09AAECL1834A1ZX");
+        myHeaders.append("MVApiKey", import.meta.env.VITE_MVKEY);
+        myHeaders.append("MVSecretKey", import.meta.env.VITE_MVSECRET);
+        myHeaders.append("GSTIN", import.meta.env.VITE_GSTIN);
         myHeaders.append("Content-Type", "application/json");
 
         const raw = JSON.stringify({
@@ -101,9 +101,9 @@ const TaxPayer = () => {
         console.log(finYear,"chlra hai -- ",gstNumber)
         setLoadingFilDetails(true);
         const myHeaders = new Headers();
-        myHeaders.append("MVApiKey", "OvN4x7MuxS7iWEJ");
-        myHeaders.append("MVSecretKey", "NnMDFUyNfcUMgwwvD225bA==");
-        myHeaders.append("GSTIN", "09AAECL1834A1ZX");
+        myHeaders.append("MVApiKey", import.meta.env.VITE_MVKEY);
+        myHeaders.append("MVSecretKey", import.meta.env.VITE_MVSECRET);
+        myHeaders.append("GSTIN", import.meta.env.VITE_GSTIN);
         myHeaders.append("Content-Type", "application/json");
 
         const raw = JSON.stringify({
