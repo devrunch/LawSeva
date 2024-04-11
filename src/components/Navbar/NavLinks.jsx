@@ -58,7 +58,7 @@ const NavLinks = () => {
           >
             {/* sublinks */}
             {link.sublinks.map((slinks) => (
-              <div>
+              <div key={`sl-${slinks.link}`}>
                 <div>
                   <Link to={slinks.link} className=" text-gray-700 hover:text-black">
                     <h1
