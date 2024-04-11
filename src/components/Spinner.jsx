@@ -1,4 +1,3 @@
-import React from 'react'
 const Spinner = ({ state }) => {
   return (
     <div className="text-center" hidden={!state}>

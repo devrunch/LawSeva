@@ -20,8 +20,8 @@ export const links = [
     submenu: true,
     sublinks: [
   
-          { name: "Partner", link: "/" },
-          { name: "Client", link: "/" },
+          { name: "Partner", link: "https://partner.caclouddesk.com" },
+          { name: "Client", link: "https://customer.caclouddesk.com" },
     
     ],
   },

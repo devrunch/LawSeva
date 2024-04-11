@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-key */
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { links } from "./Mylinks";
@@ -8,8 +7,8 @@ const NavLinks = () => {
   const [subHeading, setSubHeading] = useState("");
   return (
     <>
-      {links.map((link) => (
-        <div key='1'>
+      {links.map((link,ind) => (
+        <div key={"Links-"+ind}>
           <div className="px-3 text-left md:cursor-pointer group">
             <h1
               className="py-7 flex justify-between items-center md:pr-0 pr-5 group"
@@ -19,6 +18,7 @@ const NavLinks = () => {
                 setSubHeading("");
               }}
             >
+
               {link.name}
               <span className="text-xl md:hidden inline">
                 <ion-icon
@@ -35,8 +35,8 @@ const NavLinks = () => {
                 <div className="absolute top-20 hidden group-hover:md:block hover:md:block bg-slate-50 p-3 rounded-lg drop-shadow-lg">
 
 
-                  {link.sublinks.map((mysublinks) => (
-                    <div className="py-1">
+                  {link.sublinks.map((mysublinks,indec) => (
+                    <div className="py-1" key={`slinks-${indec}`}>
                       <Link to={mysublinks.link} className=" text-gray-700 hover:text-black">
                         <h1 className="text-md ">
                           {mysublinks.name}
