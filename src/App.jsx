@@ -13,6 +13,7 @@ function App() {
         <Navbar/>
         <Routes>
           <Route path="/gstcalculator" element={<GstDetails />} />
+          <Route path="/" element={<GstDetails />} />
           <Route path="/taxpayersearch" element={<TaxPayer />} />
         </Routes>
       </BrowserRouter>
