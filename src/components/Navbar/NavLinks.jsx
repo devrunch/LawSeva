@@ -7,8 +7,8 @@ const NavLinks = () => {
   const [subHeading, setSubHeading] = useState("");
   return (
     <>
-      {links.map((link,ind) => (
-        <div key={"Links-"+ind}>
+      {links.map((link, ind) => (
+        <div key={"Links-" + ind}>
           <div className="px-3 text-left md:cursor-pointer group">
             <h1
               className="py-7 flex justify-between items-center md:pr-0 pr-5 group"
@@ -32,20 +32,14 @@ const NavLinks = () => {
             </h1>
             {link.submenu && (
               <div>
-                <div className="absolute top-20 hidden group-hover:md:block hover:md:block bg-slate-50 p-3 rounded-lg drop-shadow-lg">
-
-
-                  {link.sublinks.map((mysublinks,indec) => (
-                    <div className="py-1" key={`slinks-${indec}`}>
-                      <Link to={mysublinks.link} className=" text-gray-700 hover:text-black">
-                        <h1 className="text-md ">
-                          {mysublinks.name}
-                        </h1>
+                <div className="absolute ml-[-40px] top-20 hidden group-hover:md:block hover:md:block bg-slate-50  rounded-lg drop-shadow-lg">
+                  {link.sublinks.map((mysublinks, indec) => (
+                    <div  className="text-gray-700 hover:text-blue-500 transition-all py-3 px-6" key={`slinks-${indec}`} >
+                      <Link to={mysublinks.link}>
+                        <h1 className="text-md">{mysublinks.name}</h1>
                       </Link>
-
                     </div>
                   ))}
-
                 </div>
               </div>
             )}
