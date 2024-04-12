@@ -8,7 +8,9 @@ const Navbar = () => {
     <nav className="bg-white">
       <div className="flex items-center font-medium justify-between md:mx-6">
         <div className="z-50  md:w-auto w-full flex justify-between">
+          <Link to='https://www.caclouddesk.com'>
           <img src={Logo} alt="logo" className="md:cursor-pointer " />
+          </Link>
           <div className="text-3xl md:hidden my-auto" onClick={() => setOpen(!open)}>
             <ion-icon name={`${open ? "close" : "menu"}`}></ion-icon>
           </div>
@@ -39,9 +41,19 @@ const Navbar = () => {
         duration-500 ${open ? "left-0" : "left-[-100%]"}
         `}
         >
-          <li>
-            <Link to="/" className="py-7 px-3 inline-block">
+           <li>
+            <Link to="https://www.caclouddesk.com" className="py-7 px-3 inline-block">
               Home
+            </Link>
+          </li>
+          <li>
+            <Link to="https://www.caclouddesk.com/demo-help-videos/" className="py-7 px-3 inline-block">
+              Live Demo
+            </Link>
+          </li>
+          <li>
+            <Link to="https://demo.caclouddesk.com/" className="py-7 px-3 inline-block">
+              Try Now
             </Link>
           </li>
           <NavLinks />
