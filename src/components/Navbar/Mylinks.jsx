@@ -11,6 +11,10 @@ export const links = [
         name: "Taxpayer Search",
         link: "/taxpayersearch"
       },
+      {
+        name: "Filling Info",
+        link: "/filinginfo"
+      },
 
 
     ],

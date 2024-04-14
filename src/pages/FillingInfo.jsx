@@ -92,6 +92,7 @@ const TaxPayer = () => {
                 setLoadingGstDetails(false)
                 setAllfin(getFinYears(tem.lstAppSCommonSearchTPResponse[0].rgdt))
                 setFinYear(getFinYears(tem.lstAppSCommonSearchTPResponse[0].rgdt)[0])
+                fetchFiling(getFinYears(tem.lstAppSCommonSearchTPResponse[0].rgdt)[0])
             })
             .catch((error) => console.error(error));
 
@@ -232,9 +233,7 @@ const TaxPayer = () => {
                                     <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Registration Date</h4>
                                     <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].rgdt}</small>
                                 </div>
-                                <div className="w-full text-center">
-                                    <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 me-2 mb-2" disabled={!filingDet} onClick={()=>fetchFiling(finYear)}>See Filing Table</button>
-                                </div>
+                              
                             </div>
                         }
                         {filingDet && Object.keys(filingDet).length!==0 && <div className="flex gap-y-10 items-center  flex-wrap my-12 mx-auto w-[95%] md:w-[90%]">

@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
+import GstCalculator from "./pages/GstCalculator"
 import GstDetails from "./pages/GstDetails"
-import TaxPayer from "./pages/TaxPayer"
+import FillingInfo from './pages/FillingInfo'
 import Navbar from "./components/Navbar"
 
 
@@ -12,9 +13,9 @@ function App() {
       <BrowserRouter>
         <Navbar/>
         <Routes>
-          <Route path="/gstcalculator" element={<GstDetails />} />
-          <Route path="/" element={<GstDetails />} />
-          <Route path="/taxpayersearch" element={<TaxPayer />} />
+          <Route path="/taxpayersearch" element={<GstDetails />} />
+          <Route path="/gstcalculator" element={<GstCalculator />} />
+          <Route path="/filinginfo" element={<FillingInfo />} />
         </Routes>
       </BrowserRouter>
     </>
