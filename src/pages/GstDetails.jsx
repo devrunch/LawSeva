@@ -2,6 +2,7 @@ import { useState } from "react";
 import gstFormat from '../assets/img/Screenshot 2024-04-06 140242.png';
 import Spinner from "../components/Spinner";
 import { toast } from "react-toastify";
+import {isValidGSTNumber} from '@scrrum-labs/gst-india-utils';
 const TaxPayer = () => {
     const [gstNumber, setGSTNumber] = useState('');
     const [isValid, setIsValid] = useState(false);
@@ -9,9 +10,9 @@ const TaxPayer = () => {
     const [loadingGstDetails, setLoadingGstDetails] = useState(false)
     // const [filingData, setFilingData] = useState()
     const verifyGSTNumber = (gst) => {
-
-        const gstRegex = /^(01|02|03|04|05|06|07|08|09|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31|32|33|34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49|50|51|52|53|54|55|56|99)[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9]{1}[Z]{1}[0-9]{1}$/;
-        if (gstRegex.test(gst.trim())) {
+        console.log(gst)
+        console.log(isValidGSTNumber(gst))
+        if (    isValidGSTNumber(gst.trim())) {
             setIsValid(true);
         } else {
             setIsValid(false);
