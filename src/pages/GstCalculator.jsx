@@ -122,13 +122,26 @@ const GstDetails = () => {
           </div>
 
           <div className="w-full">
-            <label htmlFor="">GST Amount</label>
-            <input type="number" className="text-3xl mt-2 w-full h-16 rounded-md p-2 bg-[#ffffff] border-solid border-2 border-[#828992]" placeholder="0" value={gstAmount}  onChange={(e) => gstChange(e)} />
-          </div>
-          <div className="w-full">
             <label htmlFor="">Total Amount</label>
             <input type="number" className="text-3xl mt-2 w-full h-16 rounded-md p-2 bg-[#ffffff] border-solid border-2 border-[#828992]" placeholder="0" value={totalAmount} onChange={(e) => totChange(e)} />
           </div>
+          <div className="w-full">
+            <label htmlFor="">GST Amount</label>
+            <input type="number" className="text-3xl mt-2 w-full h-16 rounded-md p-2 bg-[#ffffff] border-solid border-2 border-[#828992]" placeholder="0" value={gstAmount}  onChange={(e) => gstChange(e)} />
+          </div>
+          {gstAmount !=0 && <div className="w-full flex items-center flex-wrap ">
+            <div>
+            <span className="font-extrabold">CGST :&nbsp;</span>{customRound(bigDecimal.divide(gstAmount,2))}
+            &nbsp;+&nbsp;
+            <span className="font-extrabold">SGCT/UTGST :&nbsp;</span>{customRound(bigDecimal.divide(gstAmount,2))}
+            </div>
+            <div>
+            &nbsp;or&nbsp;
+            </div>
+            <div>
+            <span className="font-extrabold">IGST :&nbsp;</span>{customRound(gstAmount)}
+            </div>
+            </div>}
 
         </div>
       </div>

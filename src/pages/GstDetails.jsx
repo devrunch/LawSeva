@@ -1,7 +1,7 @@
 import { useState } from "react";
 import gstFormat from '../assets/img/Screenshot 2024-04-06 140242.png';
 import Spinner from "../components/Spinner";
-
+import { toast } from "react-toastify";
 const TaxPayer = () => {
     const [gstNumber, setGSTNumber] = useState('');
     const [isValid, setIsValid] = useState(false);
@@ -53,16 +53,27 @@ const TaxPayer = () => {
             .then((response) => response.text())
             .then((result) => {
                 const tem = JSON.parse(result)
-                setGstDetails(tem)
-                setLoadingGstDetails(false)
+                console.log(tem)
+                if (tem.Status !== "0") {
+                    setGstDetails(tem)
+                    setLoadingGstDetails(false)
+                }
+                else {
+                    toast.error("Invalid GST Number")
+                    setLoadingGstDetails(false)
+                }
             })
-            .catch((error) => console.error(error));
+            .catch(() => toast.error("Some Error Occured"))
+            .finally(() => setLoadingGstDetails(false));
 
     }
 
-    
+
     return (
         <>
+
+           
+
             <div className="w-full bg-white p-2 md:p-8 ">
                 <div className="px-6 py-4 bg-white shadow-md container m-auto">
 
@@ -97,8 +108,8 @@ const TaxPayer = () => {
                                     Search
                                 </button>
                             </div>
-                            {isValid && <p className="text-green-600">Valid GST Number</p>}
-                            {!isValid && gstNumber.length > 0 && <p className="text-red-600">Please enter a valid GST Number*</p>}
+                            {isValid && <p className="text-green-600">Valid GST Number Format</p>}
+                            {!isValid && gstNumber.length > 0 && <p className="text-red-600">Please enter a valid GST Number Format*</p>}
                         </form>
 
                         <Spinner state={loadingGstDetails} />
@@ -149,7 +160,7 @@ const TaxPayer = () => {
                                     <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Registration Date</h4>
                                     <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].rgdt}</small>
                                 </div>
-                               
+
                             </div>
                         }
 
