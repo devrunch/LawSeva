@@ -108,8 +108,8 @@ const TaxPayer = () => {
                                     Search
                                 </button>
                             </div>
-                            {isValid && <p className="text-green-600">Valid GST Number Format</p>}
-                            {!isValid && gstNumber.length > 0 && <p className="text-red-600">Please enter a valid GST Number Format*</p>}
+                            {isValid && <p className="text-green-600">Seems to be Valid GST Number</p>}
+                            {!isValid && gstNumber.length > 0 && <p className="text-red-600">Please enter a valid GST Number *</p>}
                         </form>
 
                         <Spinner state={loadingGstDetails} />
