@@ -64,7 +64,20 @@ const TaxPayer = () => {
                 }
             })
             .catch(() => toast.error("Some Error Occured"))
-            .finally(() => setLoadingGstDetails(false));
+            .finally(() => {
+                console.log({
+                    bsnm:gstDetails.lstAppSCommonSearchTPResponse[0].lgnm,
+                    pan: gstNumber.slice(2, 12),
+                    address: gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.stcd,
+                    entityType: gstDetails.lstAppSCommonSearchTPResponse[0].ctb,
+                    natureOfBusiness: gstDetails.lstAppSCommonSearchTPResponse[0].nba[0],
+                    pincode: gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.pncd,
+                    departmentCode: gstDetails.lstAppSCommonSearchTPResponse[0].ctj,
+                    registrationType: gstDetails.lstAppSCommonSearchTPResponse[0].dty,
+                    registrationDate: gstDetails.lstAppSCommonSearchTPResponse[0].rgdt
+                })
+                setLoadingGstDetails(false)
+            });
 
     }
 

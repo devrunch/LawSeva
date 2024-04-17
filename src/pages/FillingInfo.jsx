@@ -1,6 +1,8 @@
 import { useState } from "react";
 import gstFormat from '../assets/img/Screenshot 2024-04-06 140242.png';
 import Spinner from "../components/Spinner";
+import EmailModal from "../components/EmailModal";
+import { isValidGSTNumber } from "@scrrum-labs/gst-india-utils";
 const taxPeriod = {
     'GSTR3B': 'Monthly',
     'GSTR1': 'Monthly',
@@ -34,6 +36,7 @@ function getFinYears(startDate) {
 }
 const TaxPayer = () => {
     const [gstNumber, setGSTNumber] = useState('');
+    const [modalIsOpen, setModalIsOpen] = useState(false);
     const [isValid, setIsValid] = useState(false);
     const [gstDetails, setGstDetails] = useState()
     const [loadingGstDetails, setLoadingGstDetails] = useState(false)
@@ -44,10 +47,9 @@ const TaxPayer = () => {
 
     // const [filingData, setFilingData] = useState()
     const verifyGSTNumber = (gst) => {
-
-        const gstRegex = /^(\d{2})([A-Z]{5})(\d{4})([A-Z]{1})(\d{1})([A-Z\d]{1})([A-Z\d]{1})$/;
-        if (gstRegex.test(gst.trim())) {
-
+        console.log(gst)
+        console.log(isValidGSTNumber(gst))
+        if (    isValidGSTNumber(gst.trim())) {
             setIsValid(true);
         } else {
             setIsValid(false);
@@ -147,6 +149,7 @@ const TaxPayer = () => {
     };
     return (
         <>
+            <EmailModal setShowModal={setModalIsOpen} showModal={modalIsOpen} filing={filingDet} gstDetails={gstDetails}gstin={gstNumber} />
             <div className="w-full bg-white p-2 md:p-8 ">
                 <div className="px-6 py-4 bg-white shadow-md container m-auto">
 
@@ -181,7 +184,7 @@ const TaxPayer = () => {
                                     Search
                                 </button>
                             </div>
-                            {isValid && <p className="text-green-600">Valid GST Number</p>}
+                            {isValid && <p className="text-green-600">Seems to be Valid GST Number</p>}
                             {!isValid && gstNumber.length > 0 && <p className="text-red-600">Please enter a valid GST Number*</p>}
                         </form>
 
@@ -292,6 +295,13 @@ const TaxPayer = () => {
                                         </table>
                                     </div>
                                 })}
+                                <div className="w-full">
+                                <button className="bg-blue-500 z-10 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                onClick={() => setModalIsOpen(true)}
+                                >
+                                   Download PDF
+                                </button>
+                                </div>
 
                         </div>}
                         <h1 className="text-3xl font-bold">What is GSTIN?</h1>

@@ -11,7 +11,7 @@ const Navbar = () => {
           <Link to='https://www.caclouddesk.com'>
           <img src={Logo} alt="logo" className="md:cursor-pointer " />
           </Link>
-          <div className="text-3xl md:hidden my-auto" onClick={() => setOpen(!open)}>
+          <div className="text-3xl md:hidden my-auto z-50" onClick={() => setOpen(!open)}>
             <ion-icon name={`${open ? "close" : "menu"}`}></ion-icon>
           </div>
         </div>
@@ -37,7 +37,7 @@ const Navbar = () => {
         {/* Mobile nav */}
         <ul
           className={`
-        md:hidden z-10 bg-white fixed w-full top-0 overflow-y-auto bottom-0 py-24 pl-4
+        md:hidden z-40 bg-white fixed w-full top-0 overflow-y-auto bottom-0 py-24 pl-4
         duration-500 ${open ? "left-0" : "left-[-100%]"}
         `}
         >

@@ -113,7 +113,7 @@ const GstDetails = () => {
             </select>
           </div> */}
           <div className="flex flex-col flex-wrap" >
-            <label htmlFor="">Actual Amount</label>
+            <label htmlFor="">Actual Amount in Rupees(₹) </label>
             <input type="number" className="text-3xl mt-2 w-full h-16 rounded-md p-2 bg-[#ffffff] border-solid border-2 border-[#828992]  " placeholder="0"  
             value={actualAmount}
             onChange={(e) => {
@@ -122,25 +122,31 @@ const GstDetails = () => {
           </div>
 
           <div className="w-full">
-            <label htmlFor="">Total Amount</label>
+            <label htmlFor="">Total Amount in Rupees(₹)</label>
             <input type="number" className="text-3xl mt-2 w-full h-16 rounded-md p-2 bg-[#ffffff] border-solid border-2 border-[#828992]" placeholder="0" value={totalAmount} onChange={(e) => totChange(e)} />
           </div>
           <div className="w-full">
-            <label htmlFor="">GST Amount</label>
+            <label htmlFor="">GST Amount in Rupees(₹)</label>
             <input type="number" className="text-3xl mt-2 w-full h-16 rounded-md p-2 bg-[#ffffff] border-solid border-2 border-[#828992]" placeholder="0" value={gstAmount}  onChange={(e) => gstChange(e)} />
           </div>
-          {gstAmount !=0 && <div className="w-full flex items-center flex-wrap ">
+          {gstAmount && <div className="w-full flex items-center flex-wrap ">
             <div>
-            <span className="font-extrabold">CGST :&nbsp;</span>{customRound(bigDecimal.divide(gstAmount,2))}
+            <span className="font-extrabold">CGST :&nbsp; </span>₹{customRound(bigDecimal.divide(gstAmount,2))}
             &nbsp;+&nbsp;
-            <span className="font-extrabold">SGCT/UTGST :&nbsp;</span>{customRound(bigDecimal.divide(gstAmount,2))}
+            <span className="font-extrabold">SGCT/UTGST :&nbsp;</span>₹{customRound(bigDecimal.divide(gstAmount,2))}
             </div>
             <div>
             &nbsp;or&nbsp;
             </div>
             <div>
-            <span className="font-extrabold">IGST :&nbsp;</span>{customRound(gstAmount)}
+            <span className="font-extrabold">IGST :&nbsp;</span>₹{customRound(gstAmount)}
             </div>
+            {
+              customRound(bigDecimal.divide(gstAmount,2))*2 != gstAmount && 
+              <div>
+                <span className="font-extrabold">&nbsp;Round Off :&nbsp;</span>₹{customRound(bigDecimal.subtract(gstAmount,bigDecimal.multiply(customRound(bigDecimal.divide(gstAmount,2)),2) ))}
+            </div>
+            }
             </div>}
 
         </div>
