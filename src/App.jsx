@@ -17,6 +17,7 @@ function App() {
           <Route path="/taxpayersearch" element={<GstDetails />} />
           <Route path="/gstcalculator" element={<GstCalculator />} />
           <Route path="/filinginfo" element={<FillingInfo />} />
+          <Route path="/" element={<GstCalculator />} />
        
         </Routes>
    
