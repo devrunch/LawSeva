@@ -109,7 +109,7 @@ const TaxPayer = () => {
     }
 
     const fetchFiling = (prd) => {
-        console.log(finYear, "chlra hai -- ", gstNumber)
+        setFinYear(prd)
         setLoadingFilDetails(true);
         const myHeaders = new Headers();
         myHeaders.append("MVApiKey", import.meta.env.VITE_MVKEY);
@@ -165,7 +165,7 @@ const TaxPayer = () => {
     };
     return (
         <>
-            <EmailModal setShowModal={setModalIsOpen} showModal={modalIsOpen} filing={filingDet} gstDetails={gstDetails} gstin={gstNumber} />
+            <EmailModal setShowModal={setModalIsOpen} showModal={modalIsOpen} filing={filingDet} gstDetails={gstDetails} gstin={gstNumber} prd={finYear} />
             <div className="w-full bg-white p-2 md:p-8 ">
                 <div className="px-6 py-4 bg-white shadow-md container m-auto">
 
@@ -225,10 +225,7 @@ const TaxPayer = () => {
                                 <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
                                     <span className="anchor sm:hidden" id="Address"></span>
                                     <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Address</h4>
-                                    <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.bno} </small>
-                                    <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.bnm} </small>
-                                    <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.st} </small>
-                                    <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.stcd}</small>
+                                    <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.bno+" "+gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.bnm+' '+gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.st+' '+gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.stcd}</small>
                                 </div>
                                 <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
                                     <span className="anchor sm:hidden" id="Entity Type"></span>

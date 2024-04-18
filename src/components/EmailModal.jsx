@@ -2,13 +2,15 @@
 
 import { useState } from "react";
 import React from "react";
-export default function Modal({ showModal, setShowModal, filing, gstDetails, gstin }) {
+import { toast } from "react-toastify";
+export default function Modal({ showModal, setShowModal, filing, gstDetails, gstin,prd }) {
     const [email, setEmail] = useState('');
     const [isValidEmail, setIsValidEmail] = useState();
+    const [isLoading, setIsLoading] = useState(false);
 
     const verifyEmail = (email) => {
 
-        const emailRegex = /^(\d{2})([A-Z]{5})(\d{4})([A-Z]{1})(\d{1})([A-Z\d]{1})([A-Z\d]{1})$/;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (emailRegex.test(email)) {
 
             setIsValidEmail(true);
@@ -22,7 +24,9 @@ export default function Modal({ showModal, setShowModal, filing, gstDetails, gst
     };
 
     const handleSubmit = async (e) => {
+
         e.preventDefault();
+        setIsLoading(true)
 
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -31,8 +35,10 @@ export default function Modal({ showModal, setShowModal, filing, gstDetails, gst
             "email": email,
             "details": {
                 bsnm: gstDetails.lstAppSCommonSearchTPResponse[0].lgnm,
+                lgnm: gstDetails.lstAppSCommonSearchTPResponse[0].tradeNam  ,
                 pan: gstin.slice(2, 12),
-                address: gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.stcd,
+                prd: prd,
+                address: gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.bno+" "+gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.bnm+' '+gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.st+' '+gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.stcd,
                 entityType: gstDetails.lstAppSCommonSearchTPResponse[0].ctb,
                 natureOfBusiness: gstDetails.lstAppSCommonSearchTPResponse[0].nba[0],
                 pincode: gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.pncd,
@@ -52,9 +58,12 @@ export default function Modal({ showModal, setShowModal, filing, gstDetails, gst
 
         fetch("http://127.0.0.1:3000/send-email", requestOptions)
             .then((response) => response.text())
-            .then((result) => console.log(result))
+            .then((result) => toast.success('Email Sent Successfully'))
             .catch((error) => console.error(error))
-            .finally(() => setShowModal(false));
+            .finally(() => {
+                setIsLoading(false)
+                setShowModal(false)
+            });
     };
     return (
         <>
@@ -101,15 +110,16 @@ export default function Modal({ showModal, setShowModal, filing, gstDetails, gst
                                 {/*footer*/}
                                 <div className="flex items-center justify-end p-6  rounded-b">
                                     <button
-                                        className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                        className={`text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 `}
                                         type="button"
                                         onClick={() => setShowModal(false)}
                                     >
                                         Close
                                     </button>
                                     <button
-                                        className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                        className={`bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 ${!isValidEmail||isLoading ? ' cursor-not-allowed' : ''}`}
                                         type="button"
+                                        disabled={!isValidEmail || isLoading}
                                         onClick={(e) => handleSubmit(e)}
                                     >
                                         Send Mail
