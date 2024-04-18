@@ -64,20 +64,7 @@ const TaxPayer = () => {
                 }
             })
             .catch(() => toast.error("Some Error Occured"))
-            .finally(() => {
-                console.log({
-                    bsnm:gstDetails.lstAppSCommonSearchTPResponse[0].lgnm,
-                    pan: gstNumber.slice(2, 12),
-                    address: gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.stcd,
-                    entityType: gstDetails.lstAppSCommonSearchTPResponse[0].ctb,
-                    natureOfBusiness: gstDetails.lstAppSCommonSearchTPResponse[0].nba[0],
-                    pincode: gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.pncd,
-                    departmentCode: gstDetails.lstAppSCommonSearchTPResponse[0].ctj,
-                    registrationType: gstDetails.lstAppSCommonSearchTPResponse[0].dty,
-                    registrationDate: gstDetails.lstAppSCommonSearchTPResponse[0].rgdt
-                })
-                setLoadingGstDetails(false)
-            });
+            .finally(() => setLoadingGstDetails(false));
 
     }
 
@@ -130,8 +117,13 @@ const TaxPayer = () => {
                             <div className=" w-5/6 px-12 m-auto my-8 pt-14 pb-2 shadow-md rounded border border-grey-250 flex flex-wrap sm:pt-6 sm:px-6">
                                 <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
                                     <span className="anchor sm:hidden" id="Business Name"></span>
-                                    <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Business Name</h4>
+                                    <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Legal Name of Business</h4>
                                     <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].lgnm}</small>
+                                </div>
+                                <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
+                                    <span className="anchor sm:hidden" id="Business Name"></span>
+                                    <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Trade Name of Business</h4>
+                                    <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].tradeNam}</small>
                                 </div>
                                 <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
                                     <span className="anchor sm:hidden" id="PAN"></span>
@@ -141,11 +133,14 @@ const TaxPayer = () => {
                                 <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
                                     <span className="anchor sm:hidden" id="Address"></span>
                                     <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Address</h4>
+                                    <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.bno} </small>
+                                    <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.bnm} </small>
+                                    <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.st} </small>
                                     <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.stcd}</small>
                                 </div>
                                 <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
                                     <span className="anchor sm:hidden" id="Entity Type"></span>
-                                    <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Entity Type</h4>
+                                    <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Constitution of Business</h4>
                                     <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].ctb}</small>
                                 </div>
                                 <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">

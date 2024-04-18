@@ -3,6 +3,7 @@ import gstFormat from '../assets/img/Screenshot 2024-04-06 140242.png';
 import Spinner from "../components/Spinner";
 import EmailModal from "../components/EmailModal";
 import { isValidGSTNumber } from "@scrrum-labs/gst-india-utils";
+import { toast } from "react-toastify";
 const taxPeriod = {
     'GSTR3B': 'Monthly',
     'GSTR1': 'Monthly',
@@ -11,7 +12,7 @@ const taxPeriod = {
     'GSTR9': 'Annualy',
     'ITC04': 'Annualy/Half Yearly',
 }
-const gstRet = ['GSTR3B', 'GSTR1', 'GSTR2X','TRAN2']
+const gstRet = ['GSTR3B', 'GSTR1', 'GSTR2X', 'TRAN2']
 const Months = ['JANUARY', 'FEBRUARY',
     'MARCH',
     'APRIL',
@@ -28,11 +29,11 @@ function getFinYears(startDate) {
     const currentYear = new Date().getFullYear();
     const years = [];
 
-    for (let year = startYear; year <= currentYear; year++) {
+    for (let year = startYear; year <= currentYear-1; year++) {
         years.push(`${year}-${(year + 1).toString().slice(2)}`);
     }
 
-    return years;
+    return years.reverse();
 }
 const TaxPayer = () => {
     const [gstNumber, setGSTNumber] = useState('');
@@ -49,7 +50,7 @@ const TaxPayer = () => {
     const verifyGSTNumber = (gst) => {
         console.log(gst)
         console.log(isValidGSTNumber(gst))
-        if (    isValidGSTNumber(gst.trim())) {
+        if (isValidGSTNumber(gst.trim())) {
             setIsValid(true);
         } else {
             setIsValid(false);
@@ -90,18 +91,25 @@ const TaxPayer = () => {
             .then((response) => response.text())
             .then((result) => {
                 const tem = JSON.parse(result)
-                setGstDetails(tem)
-                setLoadingGstDetails(false)
-                setAllfin(getFinYears(tem.lstAppSCommonSearchTPResponse[0].rgdt))
-                setFinYear(getFinYears(tem.lstAppSCommonSearchTPResponse[0].rgdt)[0])
-                fetchFiling(getFinYears(tem.lstAppSCommonSearchTPResponse[0].rgdt)[0])
+                if (tem.Status !== "0") {
+                    setGstDetails(tem)
+                    setLoadingGstDetails(false)
+                    setAllfin(getFinYears(tem.lstAppSCommonSearchTPResponse[0].rgdt))
+                    setFinYear('2023-24')
+                    fetchFiling(getFinYears(tem.lstAppSCommonSearchTPResponse[0].rgdt)[0])
+                }
+                else {
+                    toast.error("Invalid GST Number")
+                    setLoadingGstDetails(false)
+                }
             })
-            .catch((error) => console.error(error));
+            .catch(() => toast.error("Some Error Occured"))
+            .finally(() => setLoadingGstDetails(false));
 
     }
-    
-    const fetchFiling =(prd) => {
-        console.log(finYear,"chlra hai -- ",gstNumber)
+
+    const fetchFiling = (prd) => {
+        console.log(finYear, "chlra hai -- ", gstNumber)
         setLoadingFilDetails(true);
         const myHeaders = new Headers();
         myHeaders.append("MVApiKey", import.meta.env.VITE_MVKEY);
@@ -127,33 +135,41 @@ const TaxPayer = () => {
             .then((response) => response.text())
             .then((result) => {
                 const data = JSON.parse(result).AppCommonRetTrackResponse.finlstAppTrackReturnResponse.EFiledlist;
-                const groupedData = data.reduce((acc, item) => {
-                    const { rtntype } = item;
-                    if (!acc[rtntype]) {
-                        acc[rtntype] = [];
-                    }
-                    acc[rtntype].push(item);
-                    return acc;
-                }, {});
-                const sortedGroupedData = Object.entries(groupedData)
+                console.log(data)
+                if(data){
+
+                    const groupedData = data.reduce((acc, item) => {
+                        const { rtntype } = item;
+                        if (!acc[rtntype]) {
+                            acc[rtntype] = [];
+                        }
+                        acc[rtntype].push(item);
+                        return acc;
+                    }, {});
+                    const sortedGroupedData = Object.entries(groupedData)
                     .sort((a, b) => b[1].length - a[1].length)
                     .reduce((acc, [key, value]) => {
                         acc[key] = value;
                         return acc;
                     }, {});
-                console.log(sortedGroupedData)
-                setFilingDet(sortedGroupedData);
-                setLoadingFilDetails(false);
+                    console.log(sortedGroupedData)
+                    setFilingDet(sortedGroupedData);
+                    setLoadingFilDetails(false);
+                }
+                else{
+                    setFilingDet([])
+                    toast.error("No Data Found")
+                }
             })
-            .catch((error) => console.error(error)).finally(() => {setLoadingFilDetails(false)});
+            .catch((error) => console.error(error)).finally(() => { setLoadingFilDetails(false) });
     };
     return (
         <>
-            <EmailModal setShowModal={setModalIsOpen} showModal={modalIsOpen} filing={filingDet} gstDetails={gstDetails}gstin={gstNumber} />
+            <EmailModal setShowModal={setModalIsOpen} showModal={modalIsOpen} filing={filingDet} gstDetails={gstDetails} gstin={gstNumber} />
             <div className="w-full bg-white p-2 md:p-8 ">
                 <div className="px-6 py-4 bg-white shadow-md container m-auto">
 
-                    <h1 className="text-3xl font-bold">GST Number Search Tool - GSTIN Verification Online</h1>
+                    <h1 className="text-3xl font-bold">GST Number Search Tool - GSTIN Verification / Filing Details Online</h1>
                     <p className="text-lg mt-3">GSTIN/UIN of the Taxpayer<span className="text-red-700 font-bold">*</span></p>
 
                     <div>
@@ -177,9 +193,9 @@ const TaxPayer = () => {
                                 />
                                 <button
                                     type="submit"
-                                    className={`z-20 text-white text-lg absolute end-2.5 bottom-[10px] bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded px-4 py-2 ${!isValid ? ' cursor-not-allowed' : ''} ` 
-                                }
-                                disabled={!isValid} 
+                                    className={`z-20 text-white text-lg absolute end-2.5 bottom-[10px] bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded px-4 py-2 ${!isValid ? ' cursor-not-allowed' : ''} `
+                                    }
+                                    disabled={!isValid}
                                 >
                                     Search
                                 </button>
@@ -193,8 +209,13 @@ const TaxPayer = () => {
                             <div className=" w-5/6 px-12 m-auto my-8 pt-14 pb-2 shadow-md rounded border border-grey-250 flex flex-wrap sm:pt-6 sm:px-6">
                                 <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
                                     <span className="anchor sm:hidden" id="Business Name"></span>
-                                    <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Business Name</h4>
+                                    <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Legal Name of Business</h4>
                                     <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].lgnm}</small>
+                                </div>
+                                <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
+                                    <span className="anchor sm:hidden" id="Business Name"></span>
+                                    <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Trade Name of Business</h4>
+                                    <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].tradeNam}</small>
                                 </div>
                                 <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
                                     <span className="anchor sm:hidden" id="PAN"></span>
@@ -204,11 +225,14 @@ const TaxPayer = () => {
                                 <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
                                     <span className="anchor sm:hidden" id="Address"></span>
                                     <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Address</h4>
+                                    <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.bno} </small>
+                                    <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.bnm} </small>
+                                    <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.st} </small>
                                     <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.stcd}</small>
                                 </div>
                                 <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
                                     <span className="anchor sm:hidden" id="Entity Type"></span>
-                                    <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Entity Type</h4>
+                                    <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Constitution of Business</h4>
                                     <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].ctb}</small>
                                 </div>
                                 <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
@@ -236,14 +260,15 @@ const TaxPayer = () => {
                                     <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Registration Date</h4>
                                     <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].rgdt}</small>
                                 </div>
-                              
+
                             </div>
                         }
-                        {filingDet && Object.keys(filingDet).length!==0 && <div className="flex gap-y-10 items-center  flex-wrap my-12 mx-auto w-[95%] md:w-[90%]">
+                        {gstDetails && <div className="flex gap-y-10 items-center  flex-wrap my-12 mx-auto w-[95%] md:w-[90%]">
                             <label htmlFor="" className="text-s-20 text-font-500 font-medium sm:text-base"> Select a Financial Year : </label>
                             <div className="relative inline-block text-left w-56 ml-4">
-                                <select name="FinYear" id="" placeholder='Select a Year' className="block  w-32 bg-white border border-gray-300 hover:border-gray-400  py-2 px-1 rounded shadow leading-tight focus:outline-none focus:border-blue-500 focus:shadow-outline" onChange={(e) => {fetchFiling(e.target.value);
-                            }}>
+                                <select name="FinYear" id="" placeholder='Select a Year' className="block  w-32 bg-white border border-gray-300 hover:border-gray-400  py-2 px-1 rounded shadow leading-tight focus:outline-none focus:border-blue-500 focus:shadow-outline" onChange={(e) => {
+                                    fetchFiling(e.target.value);
+                                }}>
                                     {allfin.map((item, i) => {
                                         return <option value={item} key={'rgdt-' + i} className="bg-gray-200">{item}</option>;
                                     })}
@@ -251,8 +276,8 @@ const TaxPayer = () => {
                                 </select>
                             </div>
                         </div>}
-                        
-                       { loadingFilDetails ? <Spinner state={loadingFilDetails} /> :  filingDet && Object.keys(filingDet).length!==0 && <div className="flex gap-y-10 items-start justify-between flex-wrap my-12 mx-auto md:w-[90%] w-[95%]">
+
+                        {loadingFilDetails ? <Spinner state={loadingFilDetails} /> : filingDet && Object.keys(filingDet).length !== 0 && <div className="flex gap-y-10 items-start justify-between flex-wrap my-12 mx-auto md:w-[90%] w-[95%]">
                             {
 
                                 Object.keys(filingDet).map((item) => {
@@ -295,13 +320,13 @@ const TaxPayer = () => {
                                         </table>
                                     </div>
                                 })}
-                                <div className="w-full">
+                            <div className="w-full">
                                 <button className="bg-blue-500 z-10 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                                onClick={() => setModalIsOpen(true)}
+                                    onClick={() => setModalIsOpen(true)}
                                 >
-                                   Download PDF
+                                    Download PDF
                                 </button>
-                                </div>
+                            </div>
 
                         </div>}
                         <h1 className="text-3xl font-bold">What is GSTIN?</h1>

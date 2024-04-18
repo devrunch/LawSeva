@@ -15,7 +15,7 @@ const GstDetails = () => {
   const taxChange = (e) => {
     let gst = bigDecimal.multiply(bigDecimal.divide(e.target.value , 100) , actualAmount);
     setGstAmount(customRound(gst));
-    setTotalAmount(customRound(bigDecimal.add(parseInt(actualAmount) , gst)));
+    setTotalAmount(customRound(bigDecimal.add(parseFloat(actualAmount) , gst)));
   }
 
   const actChange = (e) => {
@@ -32,7 +32,7 @@ const GstDetails = () => {
       setGstAmount(e.target.value);
       let act = bigDecimal.divide(e.target.value,(tax / 100));
       setActualAmount(customRound(act));
-      let total = bigDecimal.add( act , parseInt(e.target.value));
+      let total = bigDecimal.add( act , parseFloat(e.target.value));
       setTotalAmount(customRound(total));
     }
   }
