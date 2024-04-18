@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 
 import { useState } from "react";
-import React from "react";
 import { toast } from "react-toastify";
 export default function Modal({ showModal, setShowModal, filing, gstDetails, gstin,prd }) {
     const [email, setEmail] = useState('');
@@ -58,12 +57,12 @@ export default function Modal({ showModal, setShowModal, filing, gstDetails, gst
 
         fetch("http://127.0.0.1:3000/send-email", requestOptions)
             .then((response) => response.text())
-            .then((result) => toast.success('Email Sent Successfully'))
+            .then((result) => toast(JSON.parse(result).message))
             .catch((error) => console.error(error))
             .finally(() => {
                 setIsLoading(false)
                 setShowModal(false)
-            });
+            }); 
     };
     return (
         <>
