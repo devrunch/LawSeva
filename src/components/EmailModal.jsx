@@ -1,11 +1,19 @@
 /* eslint-disable react/prop-types */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import ConfirmDialog from "./Navbar/ConfirmDialog";
 export default function Modal({ showModal, setShowModal, filing, gstDetails, gstin,prd }) {
     const [email, setEmail] = useState('');
     const [isValidEmail, setIsValidEmail] = useState();
     const [isLoading, setIsLoading] = useState(false);
+    const [showPopup, setShowPopup] = useState(false);
+    
+    useEffect(() => {
+        setTimeout(() => {
+            setShowPopup(false);
+        }, 10000);
+    }, [showPopup])
 
     const verifyEmail = (email) => {
 
@@ -36,7 +44,7 @@ export default function Modal({ showModal, setShowModal, filing, gstDetails, gst
                 bsnm: gstDetails.lstAppSCommonSearchTPResponse[0].lgnm,
                 lgnm: gstDetails.lstAppSCommonSearchTPResponse[0].tradeNam  ,
                 pan: gstin.slice(2, 12),
-                prd: prd,
+                prd: prd || null,
                 address: gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.bno+" "+gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.bnm+' '+gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.st+' '+gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.stcd,
                 entityType: gstDetails.lstAppSCommonSearchTPResponse[0].ctb,
                 natureOfBusiness: gstDetails.lstAppSCommonSearchTPResponse[0].nba[0],
@@ -45,7 +53,7 @@ export default function Modal({ showModal, setShowModal, filing, gstDetails, gst
                 registrationType: gstDetails.lstAppSCommonSearchTPResponse[0].dty,
                 registrationDate: gstDetails.lstAppSCommonSearchTPResponse[0].rgdt
             },
-            "filling": filing
+            "filling": filing||null
         });
 
         const requestOptions = {
@@ -57,16 +65,16 @@ export default function Modal({ showModal, setShowModal, filing, gstDetails, gst
 
         fetch("http://127.0.0.1:3000/send-email", requestOptions)
             .then((response) => response.text())
-            .then((result) => toast(JSON.parse(result).message))
-            .catch((error) => console.error(error))
+            .then((result) => {toast(JSON.parse(result).message) ;setShowPopup(true) ;setEmail('');})
+            .catch(() => toast.error("Error"))
             .finally(() => {
                 setIsLoading(false)
-                setShowModal(false)
+                setShowModal(false) 
             }); 
     };
     return (
         <>
-
+            <ConfirmDialog showPopup={showPopup} />
             {showModal ? (
                 <>
                     <div

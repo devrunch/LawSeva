@@ -5,6 +5,7 @@ import FillingInfo from './pages/FillingInfo'
 import Navbar from "./components/Navbar"
 import { ToastContainer } from "react-toastify";
 import "react-toastify/ReactToastify.css";
+import ConfirmDialog from "./components/Navbar/ConfirmDialog"
 function App() {
 
 
@@ -18,6 +19,7 @@ function App() {
           <Route path="/gstcalculator" element={<GstCalculator />} />
           <Route path="/filinginfo" element={<FillingInfo />} />
           <Route path="/" element={<GstCalculator />} />
+          <Route path="/test" element={<ConfirmDialog />} />
        
         </Routes>
    

@@ -2,10 +2,12 @@ import { useState } from "react";
 import gstFormat from '../assets/img/Screenshot 2024-04-06 140242.png';
 import Spinner from "../components/Spinner";
 import { toast } from "react-toastify";
+import EmailModal from "../components/EmailModal";
 import {isValidGSTNumber} from '@scrrum-labs/gst-india-utils';
 const TaxPayer = () => {
     const [gstNumber, setGSTNumber] = useState('');
     const [isValid, setIsValid] = useState(false);
+    const [modalIsOpen, setModalIsOpen] = useState(false);
     const [gstDetails, setGstDetails] = useState()
     const [loadingGstDetails, setLoadingGstDetails] = useState(false)
     // const [filingData, setFilingData] = useState()
@@ -72,7 +74,7 @@ const TaxPayer = () => {
     return (
         <>
 
-           
+<EmailModal setShowModal={setModalIsOpen} showModal={modalIsOpen} gstDetails={gstDetails} gstin={gstNumber} />
 
             <div className="w-full bg-white p-2 md:p-8 ">
                 <div className="px-6 py-4 bg-white shadow-md container m-auto">
@@ -170,6 +172,17 @@ const TaxPayer = () => {
                                 </div>
 
                             </div>
+                        }
+                        {
+                            gstDetails &&
+                            <div className="w-full">
+                                <button className="bg-blue-500 z-10 hover:bg-blue-700 text-white font-bold mb-5 py-2 px-4 rounded"
+                                    onClick={() => setModalIsOpen(true)}
+                                >
+                                    Download PDF
+                                </button>
+                            </div>
+
                         }
 
                         <h1 className="text-3xl font-bold">What is GSTIN?</h1>
