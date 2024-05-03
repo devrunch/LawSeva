@@ -4,6 +4,7 @@ import Spinner from "../components/Spinner";
 import EmailModal from "../components/EmailModal";
 import { isValidGSTNumber } from "@scrrum-labs/gst-india-utils";
 import { toast } from "react-toastify";
+import { GoogleReCaptchaProvider, GoogleReCaptcha } from "react-google-recaptcha-v3";
 const taxPeriod = {
     'GSTR3B': 'Monthly',
     'GSTR1': 'Monthly',
@@ -29,13 +30,15 @@ function getFinYears(startDate) {
     const currentYear = new Date().getFullYear();
     const years = [];
 
-    for (let year = startYear; year <= currentYear-1; year++) {
+    for (let year = startYear; year <= currentYear - 1; year++) {
         years.push(`${year}-${(year + 1).toString().slice(2)}`);
     }
 
     return years.reverse();
 }
 const TaxPayer = () => {
+    const [token, setToken] = useState("");
+    const [refreshReCaptcha, setRefreshReCaptcha] = useState(false);
     const [gstNumber, setGSTNumber] = useState('');
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [isValid, setIsValid] = useState(false);
@@ -47,6 +50,11 @@ const TaxPayer = () => {
     const [filingDet, setFilingDet] = useState([])
 
     // const [filingData, setFilingData] = useState()
+
+    const setTokenFunc = (getToken) => {
+        setToken(getToken);
+    };
+
     const verifyGSTNumber = (gst) => {
         console.log(gst)
         console.log(isValidGSTNumber(gst))
@@ -73,6 +81,7 @@ const TaxPayer = () => {
         myHeaders.append("Content-Type", "application/json");
 
         const raw = JSON.stringify({
+            "token": token,
             "AppSCommonSearchTPItem": [
                 {
                     "GSTIN": gstNumber.trim()
@@ -103,7 +112,10 @@ const TaxPayer = () => {
                     setLoadingGstDetails(false)
                 }
             })
-            .catch(() => toast.error("Some Error Occured"))
+            .catch(() =>{ 
+                setRefreshReCaptcha(!refreshReCaptcha);
+                toast.error("Some Error Occured")
+                })
             .finally(() => setLoadingGstDetails(false));
 
     }
@@ -136,7 +148,7 @@ const TaxPayer = () => {
             .then((result) => {
                 const data = JSON.parse(result).AppCommonRetTrackResponse.finlstAppTrackReturnResponse.EFiledlist;
                 console.log(data)
-                if(data){
+                if (data) {
 
                     const groupedData = data.reduce((acc, item) => {
                         const { rtntype } = item;
@@ -147,16 +159,16 @@ const TaxPayer = () => {
                         return acc;
                     }, {});
                     const sortedGroupedData = Object.entries(groupedData)
-                    .sort((a, b) => b[1].length - a[1].length)
-                    .reduce((acc, [key, value]) => {
-                        acc[key] = value;
-                        return acc;
-                    }, {});
+                        .sort((a, b) => b[1].length - a[1].length)
+                        .reduce((acc, [key, value]) => {
+                            acc[key] = value;
+                            return acc;
+                        }, {});
                     console.log(sortedGroupedData)
                     setFilingDet(sortedGroupedData);
                     setLoadingFilDetails(false);
                 }
-                else{
+                else {
                     setFilingDet([])
                     toast.error("No Data Found")
                 }
@@ -199,6 +211,13 @@ const TaxPayer = () => {
                                 >
                                     Search
                                 </button>
+                                <GoogleReCaptchaProvider reCaptchaKey={'6LeKjc8pAAAAAOIdr2sHFXOqX2El3STDIXDQVn6W'}>
+                                    <GoogleReCaptcha
+                                        className="google-recaptcha"
+                                        onVerify={setTokenFunc}
+                                        refreshReCaptcha={refreshReCaptcha}
+                                    />
+                                </GoogleReCaptchaProvider>
                             </div>
                             {isValid && <p className="text-green-600">Seems to be Valid GST Number</p>}
                             {!isValid && gstNumber.length > 0 && <p className="text-red-600">Please enter a valid GST Number*</p>}
@@ -225,7 +244,7 @@ const TaxPayer = () => {
                                 <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
                                     <span className="anchor sm:hidden" id="Address"></span>
                                     <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Address</h4>
-                                    <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.bno+" "+gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.bnm+' '+gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.st+' '+gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.stcd}</small>
+                                    <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.bno + " " + gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.bnm + ' ' + gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.st + ' ' + gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.stcd}</small>
                                 </div>
                                 <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
                                     <span className="anchor sm:hidden" id="Entity Type"></span>

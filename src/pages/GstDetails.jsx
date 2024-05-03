@@ -4,13 +4,20 @@ import Spinner from "../components/Spinner";
 import { toast } from "react-toastify";
 import EmailModal from "../components/EmailModal";
 import {isValidGSTNumber} from '@scrrum-labs/gst-india-utils';
+import { GoogleReCaptchaProvider, GoogleReCaptcha } from "react-google-recaptcha-v3";
 const TaxPayer = () => {
+    const [token, setToken] = useState("");
+    const [refreshReCaptcha, setRefreshReCaptcha] = useState(false);
     const [gstNumber, setGSTNumber] = useState('');
     const [isValid, setIsValid] = useState(false);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [gstDetails, setGstDetails] = useState()
     const [loadingGstDetails, setLoadingGstDetails] = useState(false)
     // const [filingData, setFilingData] = useState()
+
+    const setTokenFunc = (getToken) => {
+        setToken(getToken);
+    };
     const verifyGSTNumber = (gst) => {
         console.log(gst)
         console.log(isValidGSTNumber(gst))
@@ -37,6 +44,7 @@ const TaxPayer = () => {
         myHeaders.append("Content-Type", "application/json");
 
         const raw = JSON.stringify({
+            "token": token,
             "AppSCommonSearchTPItem": [
                 {
                     "GSTIN": gstNumber.trim()
@@ -65,9 +73,10 @@ const TaxPayer = () => {
                     setLoadingGstDetails(false)
                 }
             })
-            .catch(() => toast.error("Some Error Occured"))
+            .catch(() => {
+                setRefreshReCaptcha(!refreshReCaptcha)
+                toast.error("Some Error Occured")})
             .finally(() => setLoadingGstDetails(false));
-
     }
 
 
@@ -109,6 +118,13 @@ const TaxPayer = () => {
                                 >
                                     Search
                                 </button>
+                                <GoogleReCaptchaProvider reCaptchaKey={'6LeKjc8pAAAAAOIdr2sHFXOqX2El3STDIXDQVn6W'}>
+                                    <GoogleReCaptcha
+                                        className="google-recaptcha"
+                                        onVerify={setTokenFunc}
+                                        refreshReCaptcha={refreshReCaptcha}
+                                    />
+                                </GoogleReCaptchaProvider>
                             </div>
                             {isValid && <p className="text-green-600">Seems to be Valid GST Number</p>}
                             {!isValid && gstNumber.length > 0 && <p className="text-red-600">Please enter a valid GST Number *</p>}
