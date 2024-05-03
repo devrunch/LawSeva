@@ -63,7 +63,7 @@ export default function Modal({ showModal, setShowModal, filing, gstDetails, gst
             redirect: "follow"
         };
 
-        fetch("http://127.0.0.1:3000/send-email", requestOptions)
+        fetch("https://server-fbzl.onrender.com/send-email", requestOptions)
             .then((response) => response.text())
             .then((result) => {toast(JSON.parse(result).message) ;setShowPopup(true) ;setEmail('');})
             .catch(() => toast.error("Error"))
