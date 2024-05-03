@@ -118,7 +118,7 @@ const TaxPayer = () => {
                                 >
                                     Search
                                 </button>
-                                <GoogleReCaptchaProvider reCaptchaKey={'6LeKjc8pAAAAAOIdr2sHFXOqX2El3STDIXDQVn6W'}>
+                                <GoogleReCaptchaProvider reCaptchaKey={'6LcHcccpAAAAAJLVzMf3fHZciZgvMcA0kflqHsUi'}>
                                     <GoogleReCaptcha
                                         className="google-recaptcha"
                                         onVerify={setTokenFunc}
