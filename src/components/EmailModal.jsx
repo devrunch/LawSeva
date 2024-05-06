@@ -62,15 +62,14 @@ export default function Modal({ showModal, setShowModal, filing, gstDetails, gst
             body: raw,
             redirect: "follow"
         };
+        setIsLoading(false)
+        setShowModal(false) 
+        setShowPopup(true) ;
 
-        fetch("https://server-fbzl.onrender.com/send-email", requestOptions)
+        fetch(import.meta.env.VITE_BACK+"/send-api", requestOptions)
             .then((response) => response.text())
-            .then((result) => {toast(JSON.parse(result).message) ;setShowPopup(true) ;setEmail('');})
-            .catch(() => toast.error("Error"))
-            .finally(() => {
-                setIsLoading(false)
-                setShowModal(false) 
-            }); 
+            .then((result) => {toast(JSON.parse(result).message) ;setEmail('');})
+            .catch(() => toast.error("Error")) 
     };
     return (
         <>
