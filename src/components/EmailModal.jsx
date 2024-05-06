@@ -42,6 +42,7 @@ export default function Modal({ showModal, setShowModal, filing, gstDetails, gst
             "email": email,
             "details": {
                 bsnm: gstDetails.lstAppSCommonSearchTPResponse[0].lgnm,
+                gstin: gstDetails.lstAppSCommonSearchTPResponse[0].RequestedGSTIN,
                 lgnm: gstDetails.lstAppSCommonSearchTPResponse[0].tradeNam  ,
                 pan: gstin.slice(2, 12),
                 prd: prd || null,
