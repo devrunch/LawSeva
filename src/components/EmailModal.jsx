@@ -69,7 +69,7 @@ export default function Modal({ showModal, setShowModal, filing, gstDetails, gst
 
         fetch(import.meta.env.VITE_BACK+"/send-api", requestOptions)
             .then((response) => response.text())
-            .then((result) => {toast(JSON.parse(result).message) ;setEmail('');})
+            .then((result) => {console.log(result);toast(JSON.parse(result).message) ;setEmail('');})
             .catch(() => toast.error("Error")) 
     };
     return (

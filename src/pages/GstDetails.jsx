@@ -36,20 +36,12 @@ const TaxPayer = () => {
     const searchGst = () => {
         console.log("searching gst")
         setLoadingGstDetails(true)
-
         const myHeaders = new Headers();
-        myHeaders.append("MVApiKey", import.meta.env.VITE_MVKEY);
-        myHeaders.append("MVSecretKey", import.meta.env.VITE_MVSECRET);
-        myHeaders.append("GSTIN", import.meta.env.VITE_GSTIN);
         myHeaders.append("Content-Type", "application/json");
 
         const raw = JSON.stringify({
             "token": token,
-            "AppSCommonSearchTPItem": [
-                {
-                    "GSTIN": gstNumber.trim()
-                }
-            ]
+            "gstin": gstNumber,
         });
 
         const requestOptions = {
@@ -59,24 +51,30 @@ const TaxPayer = () => {
             redirect: "follow"
         };
 
-        fetch("https://www.ewaybills.com/MVEWBAuthenticate/MVAppSCommonSearchTP", requestOptions)
+        fetch(import.meta.env.VITE_BACK+"/gst/gstUser", requestOptions)
             .then((response) => response.text())
             .then((result) => {
+                console.log(result)
                 const tem = JSON.parse(result)
-                console.log(tem)
-                if (tem.Status !== "0") {
+                if(tem.message === "Invalid Captcha"){
+                    toast.error("Invalid Captcha")
+                }
+                else if (tem.Status !== "0") {
+                    console.log(tem)
                     setGstDetails(tem)
                     setLoadingGstDetails(false)
                 }
                 else {
-                    toast.error("Invalid GST Number")
+                    toast.error(tem.message)
                     setLoadingGstDetails(false)
                 }
             })
             .catch(() => {
-                setRefreshReCaptcha(!refreshReCaptcha)
-                toast.error("Some Error Occured")})
+                setRefreshReCaptcha(!refreshReCaptcha);
+                toast.error("Some Error Occured")
+            })
             .finally(() => setLoadingGstDetails(false));
+
     }
 
 
@@ -118,7 +116,7 @@ const TaxPayer = () => {
                                 >
                                     Search
                                 </button>
-                                <GoogleReCaptchaProvider reCaptchaKey={'6LcHcccpAAAAAJLVzMf3fHZciZgvMcA0kflqHsUi'}>
+                                <GoogleReCaptchaProvider reCaptchaKey={'6LeKjc8pAAAAAOIdr2sHFXOqX2El3STDIXDQVn6W'}>
                                     <GoogleReCaptcha
                                         className="google-recaptcha"
                                         onVerify={setTokenFunc}

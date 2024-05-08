@@ -73,20 +73,12 @@ const TaxPayer = () => {
     const searchGst = () => {
         console.log("searching gst")
         setLoadingGstDetails(true)
-
         const myHeaders = new Headers();
-        myHeaders.append("MVApiKey", import.meta.env.VITE_MVKEY);
-        myHeaders.append("MVSecretKey", import.meta.env.VITE_MVSECRET);
-        myHeaders.append("GSTIN", import.meta.env.VITE_GSTIN);
         myHeaders.append("Content-Type", "application/json");
 
         const raw = JSON.stringify({
             "token": token,
-            "AppSCommonSearchTPItem": [
-                {
-                    "GSTIN": gstNumber.trim()
-                }
-            ]
+            "gstin": gstNumber,
         });
 
         const requestOptions = {
@@ -96,11 +88,14 @@ const TaxPayer = () => {
             redirect: "follow"
         };
 
-        fetch("https://www.ewaybills.com/MVEWBAuthenticate/MVAppSCommonSearchTP", requestOptions)
+        fetch(import.meta.env.VITE_BACK+"/gst/gstUser", requestOptions)
             .then((response) => response.text())
             .then((result) => {
                 const tem = JSON.parse(result)
-                if (tem.Status !== "0") {
+                if(tem.message === "Invalid Captcha"){
+                    toast.error("Invalid Captcha")
+                }
+                else if (tem.Status !== "0") {
                     setGstDetails(tem)
                     setLoadingGstDetails(false)
                     setAllfin(getFinYears(tem.lstAppSCommonSearchTPResponse[0].rgdt))
@@ -112,10 +107,10 @@ const TaxPayer = () => {
                     setLoadingGstDetails(false)
                 }
             })
-            .catch(() =>{ 
+            .catch(() => {
                 setRefreshReCaptcha(!refreshReCaptcha);
                 toast.error("Some Error Occured")
-                })
+            })
             .finally(() => setLoadingGstDetails(false));
 
     }
@@ -124,16 +119,12 @@ const TaxPayer = () => {
         setFinYear(prd)
         setLoadingFilDetails(true);
         const myHeaders = new Headers();
-        myHeaders.append("MVApiKey", import.meta.env.VITE_MVKEY);
-        myHeaders.append("MVSecretKey", import.meta.env.VITE_MVSECRET);
-        myHeaders.append("GSTIN", import.meta.env.VITE_GSTIN);
         myHeaders.append("Content-Type", "application/json");
 
         const raw = JSON.stringify({
-            "AppCommonRetTrackItem": {
-                "GSTIN": gstNumber.trim(),
-                "FinYear": prd
-            }
+            "token": token,
+            "gstin": gstNumber,
+            "year": prd
         });
 
         const requestOptions = {
@@ -143,37 +134,13 @@ const TaxPayer = () => {
             redirect: "follow"
         };
 
-        fetch("https://www.ewaybills.com/MVEWBAuthenticate/MVAppCommonRetTrackGSTIN", requestOptions)
+        fetch(import.meta.env.VITE_BACK+"/gst/gstfiling", requestOptions)
             .then((response) => response.text())
-            .then((result) => {
-                const data = JSON.parse(result).AppCommonRetTrackResponse.finlstAppTrackReturnResponse.EFiledlist;
-                console.log(data)
-                if (data) {
+            .then((result) => setFilingDet(JSON.parse(result)))
+            .catch((error) => console.error(error))
+            .finally(() => setLoadingFilDetails(false));
 
-                    const groupedData = data.reduce((acc, item) => {
-                        const { rtntype } = item;
-                        if (!acc[rtntype]) {
-                            acc[rtntype] = [];
-                        }
-                        acc[rtntype].push(item);
-                        return acc;
-                    }, {});
-                    const sortedGroupedData = Object.entries(groupedData)
-                        .sort((a, b) => b[1].length - a[1].length)
-                        .reduce((acc, [key, value]) => {
-                            acc[key] = value;
-                            return acc;
-                        }, {});
-                    console.log(sortedGroupedData)
-                    setFilingDet(sortedGroupedData);
-                    setLoadingFilDetails(false);
-                }
-                else {
-                    setFilingDet([])
-                    toast.error("No Data Found")
-                }
-            })
-            .catch((error) => console.error(error)).finally(() => { setLoadingFilDetails(false) });
+
     };
     return (
         <>
@@ -211,7 +178,7 @@ const TaxPayer = () => {
                                 >
                                     Search
                                 </button>
-                                <GoogleReCaptchaProvider reCaptchaKey={'6LcHcccpAAAAAJLVzMf3fHZciZgvMcA0kflqHsUi'}>
+                                <GoogleReCaptchaProvider reCaptchaKey={'6LeKjc8pAAAAAOIdr2sHFXOqX2El3STDIXDQVn6W'}>
                                     <GoogleReCaptcha
                                         className="google-recaptcha"
                                         onVerify={setTokenFunc}
