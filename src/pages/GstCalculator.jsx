@@ -47,7 +47,7 @@ const GstDetails = () => {
 
   return (
     <>
-      <div className="bg-[#2d3dc5] container text-center p-14 w-full">
+      <div className="bg-[#2d3dc5]  text-center p-14 w-full">
         <h1 className="text-3xl font-extrabold text-white">
           ONLINE GST CALCULATOR
         </h1>
