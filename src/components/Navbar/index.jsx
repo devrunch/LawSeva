@@ -3,10 +3,6 @@ import { Link } from "react-router-dom";
 import Logo from "../../assets/img/Untitled-design-17.svg";
 const Navbar = () => {
   const [open, setOpen] = useState(false);
-  const handleLinkClick = () => {
-    // Close the navbar when a link is clicked
-    setOpen(false);
-  };
   return (
     <nav className="bg-white">
       <div className="flex items-center font-medium justify-between md:mx-6">
