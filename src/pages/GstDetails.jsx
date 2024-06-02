@@ -1,5 +1,4 @@
 import { useState } from "react";
-import gstFormat from '../assets/img/Screenshot 2024-04-06 140242.png';
 import Spinner from "../components/Spinner";
 import { toast } from "react-toastify";
 import EmailModal from "../components/EmailModal";
@@ -199,7 +198,7 @@ const TaxPayer = () => {
 
                         }
 
-                        <h1 className="text-3xl font-bold">What is GSTIN?</h1>
+<h1 className="text-3xl font-bold">What is GSTIN?</h1>
                         <p className="text-lg mt-3 md:w-4/5">GSTIN is the GST identification number or GST number. A GSTIN is a 15-digit PAN-based unique identification number allotted to every registered person under GST. As a GST-registered dealer, you might want to do a GST verification before entering it into your GST Returns. You can use the GST number check tool to do GST number (GSTIN) verification.</p>
                         <p className="text-lg mt-3 md:w-4/5">
                             <strong>Pro Tip: </strong>
@@ -212,9 +211,32 @@ const TaxPayer = () => {
                         <p className="text-lg mt-3 md:w-4/5">
                             Unlike the previous indirect tax regime where multiple registration numbers were present for different laws such as Excise, Service Tax and VAT, GSTIN is a single registration number under GST.
                         </p>
+                        <h1 className="text-3xl my-3 font-bold">Why is it Necessary to Verify the GST Number?</h1>
+                        <p className="text-lg mt-3 md:w-4/5">Verifying GST numbers is essential for businesses to ensure smooth operations and avoid complications. Here&apos;s how it benefits you.</p>
+
+                        <p className="text-lg mt-3 ml-3 leading-10 md:w-4/5">
+                            <b>Trustworthy Business Partners</b>: Verify the legitimacy of businesses you deal with to prevent fraud and ensure accurate tax filing. <br />
+                            <b>Up-to-date Information:</b> Get real-time confirmation of a GSTIN&apos;s validity and access the latest business details. <br />
+                            <b>Accurate Invoicing:</b> Avoid issuing incorrect invoices or e-invoices by verifying GSTINs on both digital and physical invoices. <br />
+                            <b>Claim Tax Credits Correctly:</b> Ensure you claim input tax credits accurately and credit the right buyers. <br />
+                            <b>Transparent Transactions:</b> Enhance business transparency by verifying GST information, leading to accurate GST return filing. <br />
+                            <b>Fraud Prevention:</b> Identify and prevent GST number fraud at the beginning of transactions. <br />
+                            <b>Error Correction:</b> Catch and rectify any errors in the GSTIN to avoid future issues.</p>
+                        <img src={'https://lh7-us.googleusercontent.com/bm5L2zHvl-wELzgIhIowdejx2AaL_Qk99KuhmMTjjrI_jfXu_IcUcqCMdchn2ryNS9FSwVXCfhDYAlDluhHGTOnxERdYQ71u7VAUnn_QVewdpXj6jN-UwB5JjEXTE95Cdf5rEwTe4sjW4N6o8sHV5bc'} alt="GST Format" className=" md:w-1/2 w-full m-2 md:m-10 " />
+
                         <h1 className="text-3xl my-3 font-bold">GST Identification Number Format</h1>
-                        <p className="text-lg mt-3 md:w-4/5">Before you proceed to undertake a GST number check, check out if the GSTIN is in the format below. If a GSTIN is not in this format, then it is not a valid GST number.</p>
-                        <img src={gstFormat} alt="GST Format" className=" md:w-1/2 w-full m-2 md:m-10 " />
+                        <p className="text-lg mt-3 md:w-4/5">Before verifying a GST number, ensure the 15-digit alphanumeric code follows this format:</p>
+
+                        <p className="text-lg mt-3 ml-3 leading-10 md:w-4/5">
+                           <b> First 2 Digits:</b> State code of the registered business. <br />
+                            <b>Next 10 Digits:</b> PAN of the registered business owner. <br />
+                            <b>13th Digit:</b>  Entity number, represents the number of registrations for the same PAN within the state. <br />
+                            <b>14th Character:</b> Always &apos;Z&apos;. <br />
+                            <b>Last Digit:</b> Checksum digit (letter or number) for error detection 
+                          </p>  
+                            <img src={'https://lh7-us.googleusercontent.com/eJCj82Sf13gelW7pbM1msSLQ53NF0sW9imIyfmwmmHnWO8USw6xdaFMGVIR4ht-4t0zDRIBIT37Hi42r1ri6xuqvEjPg6kXXJc9mnzPPrBKOZUyp7EsSFiI28yiG9KAFsHeTrC7LDfKEogtc4QAqIN8'} alt="GST Format" className=" md:w-1/2 w-full m-2 md:m-10 " />
+
+
 
                     </div>
 
