@@ -8,7 +8,7 @@ const Content = () => {
     return (
         <>
 
-            <div className=" mt-10 md:mx-10 container flex justify-between items-center w-full flex-wrap">
+            <div className=" mt-10 container flex justify-between items-center w-full flex-wrap">
                 <div className='md:w-1/2 '>
                     <h2 className="text-4xl font-bold mb-2 ">Why is it Necessary to <br />Verify the GST Number?</h2>
                     <div>
