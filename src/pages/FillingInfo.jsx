@@ -148,47 +148,49 @@ const TaxPayer = () => {
             <div className="w-full bg-white p-2 md:p-8 ">
                 <div className="px-6 py-4 bg-white shadow-md container m-auto">
 
-                    <h1 className="text-3xl font-bold">GST Number Search Tool - GSTIN Verification / Filing Details Online</h1>
-                    <p className="text-lg mt-3">GSTIN/UIN of the Taxpayer<span className="text-red-700 font-bold">*</span></p>
 
-                    <div>
+                    <div className="m-auto">
 
+                        <div className="md:w-11/12 m-auto">
+                            <h1 className="text-3xl font-bold">GST Number Search Tool - GSTIN Verification / Filing Details Online</h1>
+                            <p className="text-lg mt-3 ">GSTIN/UIN of the Taxpayer<span className="text-red-700 font-bold">*</span></p>
 
-                        <form className="max-w-3xl  my-8" onSubmit={(e) => { e.preventDefault(); searchGst() }} >
-                            <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only ">Search</label>
-                            <div className="relative">
-                                <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                    <svg className="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                                    </svg>
-                                </div>
-                                <input
-                                    type="search"
-                                    id="default-search"
-                                    className="block text-xl w-full p-4 ps-10 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 "
-                                    placeholder="Enter GSTIN/UIN of the Taxpayer"
-                                    onChange={(e) => handleGstVerify(e)}
-                                    required
-                                />
-                                <button
-                                    type="submit"
-                                    className={`z-20 text-white text-lg absolute end-2.5 bottom-[10px] bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded px-4 py-2 ${!isValid ? ' cursor-not-allowed' : ''} `
-                                    }
-                                    disabled={!isValid}
-                                >
-                                    Search
-                                </button>
-                                <GoogleReCaptchaProvider reCaptchaKey={import.meta.env.VITE_SITEKEY}>
-                                    <GoogleReCaptcha
-                                        className="google-recaptcha"
-                                        onVerify={setTokenFunc}
-                                        refreshReCaptcha={refreshReCaptcha}
+                            <form className=" m-auto my-8" onSubmit={(e) => { e.preventDefault(); searchGst() }} >
+                                <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only ">Search</label>
+                                <div className="relative">
+                                    <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                        <svg className="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                                        </svg>
+                                    </div>
+                                    <input
+                                        type="search"
+                                        id="default-search"
+                                        className="block text-xl w-full p-4 ps-10 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 "
+                                        placeholder="Enter GSTIN/UIN of the Taxpayer"
+                                        onChange={(e) => handleGstVerify(e)}
+                                        required
                                     />
-                                </GoogleReCaptchaProvider>
-                            </div>
-                            {isValid && <p className="text-green-600">Seems to be Valid GST Number</p>}
-                            {!isValid && gstNumber.length > 0 && <p className="text-red-600">Please enter a valid GST Number*</p>}
-                        </form>
+                                    <button
+                                        type="submit"
+                                        className={`z-20 text-white text-lg absolute end-2.5 bottom-[10px] bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded px-4 py-2 ${!isValid ? ' cursor-not-allowed' : ''} `
+                                        }
+                                        disabled={!isValid}
+                                    >
+                                        Search
+                                    </button>
+                                    <GoogleReCaptchaProvider reCaptchaKey={import.meta.env.VITE_SITEKEY}>
+                                        <GoogleReCaptcha
+                                            className="google-recaptcha"
+                                            onVerify={setTokenFunc}
+                                            refreshReCaptcha={refreshReCaptcha}
+                                        />
+                                    </GoogleReCaptchaProvider>
+                                </div>
+                                {isValid && <p className="text-green-600">Seems to be Valid GST Number</p>}
+                                {!isValid && gstNumber.length > 0 && <p className="text-red-600">Please enter a valid GST Number*</p>}
+                            </form>
+                        </div>
 
                         <Spinner state={loadingGstDetails} />
                         {gstDetails &&
@@ -312,21 +314,9 @@ const TaxPayer = () => {
                             </div>
 
                         </div>}
-                        <h1 className="text-3xl font-bold">What is GSTIN?</h1>
-                        <p className="text-lg mt-3 md:w-4/5">GSTIN is the GST identification number or GST number. A GSTIN is a 15-digit PAN-based unique identification number allotted to every registered person under GST. As a GST-registered dealer, you might want to do a GST verification before entering it into your GST Returns. You can use the GST number check tool to do GST number (GSTIN) verification.</p>
-                        <p className="text-lg mt-3 md:w-4/5">
-                            <strong>Pro Tip: </strong>
-                            <span className="null"> To ensure you never enter an invalid GSTIN on your returns, try the </span>
-                            <strong>built-in validations</strong>
-                        </p>
-                        <p className="text-lg mt-3 md:w-4/5">
-                            There can be multiple GSTINs for a single person with a PAN, being an assessee under the Income Tax Act. A GSTIN is obtained for every state or Union Territory from which such a person operates. It becomes compulsory to obtain GSTIN when the person crosses the threshold limit for GST registration by registering himself under GST.
-                        </p>
-                        <p className="text-lg mt-3 md:w-4/5">
-                            Unlike the previous indirect tax regime where multiple registration numbers were present for different laws such as Excise, Service Tax and VAT, GSTIN is a single registration number under GST.
-                        </p>
-                        <Content/>
-                        
+
+                        <Content />
+
 
                     </div>
 

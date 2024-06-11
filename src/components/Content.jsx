@@ -7,8 +7,30 @@ import img1 from '../assets/img/2a22aa4e006bea9ca4c11ab8d6b8dc37.png'
 const Content = () => {
     return (
         <>
+            <div className="md:w-11/12 flex flex-col justify-center m-auto">
 
-            <div className=" mt-10 container flex justify-between items-center w-full flex-wrap">
+                <h1 className="text-3xl font-bold text-left my-4">What is GSTIN?</h1>
+
+                <p className="text-lg mt-3">GSTIN is the GST identification number or GST number. A GSTIN is a 15-digit PAN-based unique identification number allotted to every registered person under GST. As a GST-registered dealer, you might want to do a GST verification before entering it into your GST Returns. You can use the GST number check tool to do GST number (GSTIN) verification.</p>
+
+                <div className="p-5 bg-[#effeff] rounded-xl border-2 border-cyan-400  my-4 ">
+
+                    <p className="text-lg mt-3 md:w-4/5">
+                        <strong className='text-sky-600'>Pro Tip: </strong>
+                        <span className="null"> To ensure you never enter an invalid GSTIN on your returns, try the </span>
+                        <strong>built-in validations</strong>
+                    </p>
+
+                    <p className="text-lg mt-3 md:w-4/5">
+                        There can be multiple GSTINs for a single person with a PAN, being an assessee under the Income Tax Act. A GSTIN is obtained for every state or Union Territory from which such a person operates. It becomes compulsory to obtain GSTIN when the person crosses the threshold limit for GST registration by registering himself under GST.
+                    </p>
+
+                    <p className="text-lg mt-3 md:w-4/5">
+                        Unlike the previous indirect tax regime where multiple registration numbers were present for different laws such as Excise, Service Tax and VAT, GSTIN is a single registration number under GST.
+                    </p>
+                </div>
+            </div>
+            <div className="md:w-11/12 m-auto mt-10 container flex justify-between items-center flex-wrap">
                 <div className='md:w-1/2 '>
                     <h2 className="text-4xl font-bold mb-2 ">Why is it Necessary to <br />Verify the GST Number?</h2>
                     <div>
