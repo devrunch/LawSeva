@@ -43,7 +43,9 @@ export default function Modal({ showModal, setShowModal, filing, gstDetails, gst
             "details": {
                 bsnm: gstDetails.lstAppSCommonSearchTPResponse[0].lgnm,
                 gstin: gstDetails.lstAppSCommonSearchTPResponse[0].RequestedGSTIN,
-                lgnm: gstDetails.lstAppSCommonSearchTPResponse[0].tradeNam  ,
+                lgnm: gstDetails.lstAppSCommonSearchTPResponse[0].tradeNam ,
+                lstupdt: gstDetails.lstAppSCommonSearchTPResponse[0].lstupdt,
+                sts: gstDetails.lstAppSCommonSearchTPResponse[0].sts,
                 pan: gstin.slice(2, 12),
                 prd: prd || null,
                 address: gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.bno+" "+gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.bnm+' '+gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.st+' '+gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.stcd,

@@ -66,8 +66,8 @@ const TaxPayer = () => {
     };
 
     const handleGstVerify = (e) => {
-        setGSTNumber(e.target.value);
-        verifyGSTNumber(e.target.value);
+        setGSTNumber(e.target.value.toLocaleUpperCase());
+        verifyGSTNumber(e.target.value.toLocaleUpperCase());
     };
 
     const searchGst = () => {
@@ -97,6 +97,7 @@ const TaxPayer = () => {
                 }
                 else if (tem.Status !== "0") {
                     setGstDetails(tem)
+                    console.log(tem)
                     setLoadingGstDetails(false)
                     setAllfin(getFinYears(tem.lstAppSCommonSearchTPResponse[0].rgdt))
                     setFinYear('2023-24')
@@ -169,6 +170,7 @@ const TaxPayer = () => {
                                         className="block text-xl w-full p-4 ps-10 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 "
                                         placeholder="Enter GSTIN/UIN of the Taxpayer"
                                         onChange={(e) => handleGstVerify(e)}
+                                        value={gstNumber}
                                         required
                                     />
                                     <button
@@ -194,56 +196,66 @@ const TaxPayer = () => {
 
                         <Spinner state={loadingGstDetails} />
                         {gstDetails &&
-                            <div className=" w-5/6 px-12 m-auto my-8 pt-14 pb-2 shadow-md rounded border border-grey-250 flex flex-wrap sm:pt-6 sm:px-6">
+                            <div className=" lg:w-5/6 px-12 m-auto my-8 pt-14 pb-2 shadow-md rounded border border-grey-250 flex flex-wrap sm:pt-6 sm:px-6">
                                 <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
                                     <span className="anchor sm:hidden" id="Business Name"></span>
-                                    <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Legal Name of Business</h4>
+                                    <h4 className="text-font-200 uppercase text-base mb-2 font-bold sm:text-s-14">Legal Name of Business</h4>
                                     <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].lgnm}</small>
                                 </div>
                                 <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
                                     <span className="anchor sm:hidden" id="Business Name"></span>
-                                    <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Trade Name of Business</h4>
+                                    <h4 className="text-font-200 uppercase text-base mb-2 font-bold sm:text-s-14">Trade Name of Business</h4>
                                     <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].tradeNam}</small>
                                 </div>
                                 <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
                                     <span className="anchor sm:hidden" id="PAN"></span>
-                                    <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">PAN</h4>
+                                    <h4 className="text-font-200 uppercase text-base mb-2 font-bold sm:text-s-14">PAN</h4>
                                     <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstNumber.slice(2, 12)}</small>
                                 </div>
                                 <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
                                     <span className="anchor sm:hidden" id="Address"></span>
-                                    <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Address</h4>
+                                    <h4 className="text-font-200 uppercase text-base mb-2 font-bold sm:text-s-14">GSTIN / UIN Status</h4>
+                                    <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].sts}</small>
+                                </div>
+                                <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
+                                    <span className="anchor sm:hidden" id="Address"></span>
+                                    <h4 className="text-font-200 uppercase text-base mb-2 font-bold sm:text-s-14">Address</h4>
                                     <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.bno + " " + gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.bnm + ' ' + gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.st + ' ' + gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.stcd}</small>
                                 </div>
                                 <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
                                     <span className="anchor sm:hidden" id="Entity Type"></span>
-                                    <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Constitution of Business</h4>
+                                    <h4 className="text-font-200 uppercase text-base mb-2 font-bold sm:text-s-14">Constitution of Business</h4>
                                     <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].ctb}</small>
                                 </div>
                                 <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
                                     <span className="anchor sm:hidden" id="Nature of business"></span>
-                                    <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Nature of business</h4>
+                                    <h4 className="text-font-200 uppercase text-base mb-2 font-bold sm:text-s-14">Nature of business</h4>
                                     <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].nba[0]}</small>
                                 </div>
                                 <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
                                     <span className="anchor sm:hidden" id="Pincode"></span>
-                                    <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Pincode</h4>
+                                    <h4 className="text-font-200 uppercase text-base mb-2 font-bold sm:text-s-14">Pincode</h4>
                                     <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.pncd}</small>
                                 </div>
                                 <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
                                     <span className="anchor sm:hidden" id="Department Code"></span>
-                                    <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Department Code</h4>
+                                    <h4 className="text-font-200 uppercase text-base mb-2 font-bold sm:text-s-14">Department Code</h4>
                                     <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].ctj}</small>
                                 </div>
                                 <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
                                     <span className="anchor sm:hidden" id="Registration Type"></span>
-                                    <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Registration Type</h4>
+                                    <h4 className="text-font-200 uppercase text-base mb-2 font-bold sm:text-s-14">Registration Type</h4>
                                     <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].dty}</small>
                                 </div>
                                 <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
                                     <span className="anchor sm:hidden" id="Registration Date"></span>
-                                    <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Registration Date</h4>
+                                    <h4 className="text-font-200 uppercase text-base mb-2 font-bold sm:text-s-14">Registration Date</h4>
                                     <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].rgdt}</small>
+                                </div>
+                                <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
+                                    <span className="anchor sm:hidden" id="Registration Date"></span>
+                                    <h4 className="text-font-200 uppercase text-base mb-2 font-bold sm:text-s-14">Last Updated</h4>
+                                    <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].lstupdt}</small>
                                 </div>
 
                             </div>

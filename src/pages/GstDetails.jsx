@@ -130,7 +130,7 @@ const TaxPayer = () => {
                         </div>
                         <Spinner state={loadingGstDetails} />
                         {gstDetails &&
-                            <div className=" w-5/6 px-12 m-auto my-8 pt-14 pb-2 shadow-md rounded border border-grey-250 flex flex-wrap sm:pt-6 sm:px-6">
+                            <div className=" lg:w-5/6 px-12 m-auto my-8 pt-14 pb-2 shadow-md rounded border border-grey-250 flex flex-wrap sm:pt-6 sm:px-6">
                                 <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
                                     <span className="anchor sm:hidden" id="Business Name"></span>
                                     <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Legal Name of Business</h4>
@@ -145,6 +145,11 @@ const TaxPayer = () => {
                                     <span className="anchor sm:hidden" id="PAN"></span>
                                     <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">PAN</h4>
                                     <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstNumber.slice(2, 12)}</small>
+                                </div>
+                                <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
+                                    <span className="anchor sm:hidden" id="Address"></span>
+                                    <h4 className="text-font-200 uppercase text-base mb-2 font-bold sm:text-s-14">GSTIN / UIN Status</h4>
+                                    <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].sts}</small>
                                 </div>
                                 <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
                                     <span className="anchor sm:hidden" id="Address"></span>
@@ -184,7 +189,11 @@ const TaxPayer = () => {
                                     <h4 className="text-font-200 uppercase text-base mb-2 font-normal sm:text-s-14">Registration Date</h4>
                                     <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].rgdt}</small>
                                 </div>
-
+                                <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
+                                    <span className="anchor sm:hidden" id="Registration Date"></span>
+                                    <h4 className="text-font-200 uppercase text-base mb-2 font-bold sm:text-s-14">Last Updated</h4>
+                                    <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].lstupdt}</small>
+                                </div>
                             </div>
                         }
                         {
