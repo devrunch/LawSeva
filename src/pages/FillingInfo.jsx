@@ -97,7 +97,6 @@ const TaxPayer = () => {
                 }
                 else if (tem.Status !== "0") {
                     setGstDetails(tem)
-                    console.log(tem)
                     setLoadingGstDetails(false)
                     setAllfin(getFinYears(tem.lstAppSCommonSearchTPResponse[0].rgdt))
                     setFinYear('2023-24')
