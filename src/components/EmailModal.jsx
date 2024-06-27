@@ -3,12 +3,14 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import ConfirmDialog from "./Navbar/ConfirmDialog";
-export default function Modal({ showModal, setShowModal, filing, gstDetails, gstin,prd }) {
+
+
+export default function Modal({ showModal, setShowModal, filing, gstDetails, gstin, prd }) {
     const [email, setEmail] = useState('');
     const [isValidEmail, setIsValidEmail] = useState();
     const [isLoading, setIsLoading] = useState(false);
     const [showPopup, setShowPopup] = useState(false);
-    
+
     useEffect(() => {
         setTimeout(() => {
             setShowPopup(false);
@@ -30,25 +32,24 @@ export default function Modal({ showModal, setShowModal, filing, gstDetails, gst
         setEmail(e.target.value);
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async () => {
 
-        e.preventDefault();
         setIsLoading(true)
 
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
         const raw = JSON.stringify({
-            "email": email,
+            "email": email || localStorage.getItem('cacldmail'),
             "details": {
                 bsnm: gstDetails.lstAppSCommonSearchTPResponse[0].lgnm,
                 gstin: gstDetails.lstAppSCommonSearchTPResponse[0].RequestedGSTIN,
-                lgnm: gstDetails.lstAppSCommonSearchTPResponse[0].tradeNam ,
+                lgnm: gstDetails.lstAppSCommonSearchTPResponse[0].tradeNam,
                 lstupdt: gstDetails.lstAppSCommonSearchTPResponse[0].lstupdt,
                 sts: gstDetails.lstAppSCommonSearchTPResponse[0].sts,
                 pan: gstin.slice(2, 12),
                 prd: prd || null,
-                address: gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.bno+" "+gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.bnm+' '+gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.st+' '+gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.stcd,
+                address: gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.bno + " " + gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.bnm + ' ' + gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.st + ' ' + gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.stcd,
                 entityType: gstDetails.lstAppSCommonSearchTPResponse[0].ctb,
                 natureOfBusiness: gstDetails.lstAppSCommonSearchTPResponse[0].nba[0],
                 pincode: gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.pncd,
@@ -56,7 +57,7 @@ export default function Modal({ showModal, setShowModal, filing, gstDetails, gst
                 registrationType: gstDetails.lstAppSCommonSearchTPResponse[0].dty,
                 registrationDate: gstDetails.lstAppSCommonSearchTPResponse[0].rgdt
             },
-            "filling": filing||null
+            "filling": filing || null
         });
 
         const requestOptions = {
@@ -66,18 +67,27 @@ export default function Modal({ showModal, setShowModal, filing, gstDetails, gst
             redirect: "follow"
         };
         setIsLoading(false)
-        setShowModal(false) 
-        setShowPopup(true) ;
+        setShowModal(false)
+        setShowPopup(true);
 
-        fetch(import.meta.env.VITE_BACK+"/send-api", requestOptions)
+        fetch(import.meta.env.VITE_BACK + "/send-api", requestOptions)
             .then((response) => response.text())
-            .then((result) => {toast(JSON.parse(result).message) ;setEmail('');})
-            .catch(() => toast.error("Error")) 
+            .then((result) => { toast(JSON.parse(result).message); setEmail(''); })
+            .catch((error) => {toast.error("Error");console.log(error)})
     };
+    useEffect(() => {
+        if (localStorage.getItem('cacldmail')) {
+            setEmail(localStorage.getItem('cacldmail'))
+            if(showModal){
+                console.log("Sending Mail")
+                handleSubmit()
+            }
+        }
+    }, [showModal])
     return (
         <>
-            <ConfirmDialog showPopup={showPopup} />
-            {showModal ? (
+            <ConfirmDialog showPopup={showPopup} email={email}/>
+            {showModal && !(localStorage.getItem('cacldmail')) ? (
                 <>
                     <div
                         className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
@@ -126,10 +136,10 @@ export default function Modal({ showModal, setShowModal, filing, gstDetails, gst
                                         Close
                                     </button>
                                     <button
-                                        className={`bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 ${!isValidEmail||isLoading ? ' cursor-not-allowed' : ''}`}
+                                        className={`bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 ${!isValidEmail || isLoading ? ' cursor-not-allowed' : ''}`}
                                         type="button"
                                         disabled={!isValidEmail || isLoading}
-                                        onClick={(e) => handleSubmit(e)}
+                                        onClick={() => handleSubmit()}
                                     >
                                         Send Mail
                                     </button>

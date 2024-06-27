@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Link } from 'react-router-dom';
 import tick from '../../assets/tick2.svg';
-const ConfirmDialog = ({showPopup}) => {
+const ConfirmDialog = ({showPopup,email}) => {
     
 
     return (
@@ -16,6 +16,7 @@ const ConfirmDialog = ({showPopup}) => {
                 </div>
                 <p className="mb-4 text-[#3b81f5] font-bold text-2xl mt-12 font-[poppins] text-center">Filling Details Sent to Your<br /> Email !</p>
                 <p className='text-lg text-[#7D7D7D] font-semibold font-[poppins] text-center my-3'>Want to elevate your Chartered Accountancy<br /> Practice and streamline your office <br />management tasks?</p>
+                <p className='text-sm text-[#7D7D7D] font-semibold font-[poppins] text-center my-3'>PDF is sent to your email<br /> {email}</p>
                 <div className="flex justify-end">
 
                     <Link
