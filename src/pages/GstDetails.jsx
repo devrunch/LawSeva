@@ -18,6 +18,25 @@ const TaxPayer = () => {
     const setTokenFunc = (getToken) => {
         setToken(getToken);
     };
+    function getAddressString(address) {
+        const { bnm, bno, flno, loc, pncd, st, stcd } = address;
+    
+        // Build the address string
+        let addressString = '';
+    
+        if (bnm) addressString += `${bnm}, `;
+        if (bno) addressString += `${bno}, `;
+        if (flno) addressString += `${flno}, `;
+        if (loc) addressString += `${loc}, `;
+        if (st) addressString += `${st}, `;
+        if (stcd) addressString += `${stcd}, `;
+        if (pncd) addressString += `${pncd}`;
+    
+        // Remove trailing comma and space, if any
+        addressString = addressString.trim().replace(/,\s*$/, '');
+    
+        return addressString;
+    }
     const verifyGSTNumber = (gst) => {
         console.log(gst)
         console.log(isValidGSTNumber(gst))
@@ -156,10 +175,7 @@ const TaxPayer = () => {
                                 <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
                                     <span className="anchor sm:hidden" id="Address"></span>
                                     <h4 className="text-font-200 uppercase text-base mb-2 font-bold sm:text-s-14">Address</h4>
-                                    <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.bno} </small>
-                                    <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.bnm} </small>
-                                    <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.st} </small>
-                                    <small className="text-s-20 text-font-500 font-medium sm:text-base">{gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr.stcd}</small>
+                                    <small className="text-s-20 text-font-500 font-medium sm:text-base">{getAddressString(gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr)} </small>
                                 </div>
                                 <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
                                     <span className="anchor sm:hidden" id="Entity Type"></span>
