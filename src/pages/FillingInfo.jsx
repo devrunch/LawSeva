@@ -27,7 +27,7 @@ const Months = ['JANUARY', 'FEBRUARY',
     'DECEMBER']
 function getFinYears(startDate) {
     const startYear = parseInt(startDate.split('/')[2]);
-    const currentYear = new Date().getFullYear()+1;
+    const currentYear = new Date().getFullYear() + 1;
     const years = [];
 
     for (let year = startYear; year <= currentYear - 1; year++) {
@@ -117,10 +117,10 @@ const TaxPayer = () => {
     }
     function getAddressString(address) {
         const { bnm, bno, flno, loc, pncd, st, stcd } = address;
-    
+
         // Build the address string
         let addressString = '';
-    
+
         if (bnm) addressString += `${bnm}, `;
         if (bno) addressString += `${bno}, `;
         if (flno) addressString += `${flno}, `;
@@ -128,14 +128,14 @@ const TaxPayer = () => {
         if (st) addressString += `${st}, `;
         if (stcd) addressString += `${stcd}, `;
         if (pncd) addressString += `${pncd}`;
-    
+
         // Remove trailing comma and space, if any
         addressString = addressString.trim().replace(/,\s*$/, '');
-    
+
         return addressString;
     }
 
-    const fetchFiling = (prd) => {
+    const fetchFiling = async (prd) => {
         setFinYear(prd)
         setLoadingFilDetails(true);
         const myHeaders = new Headers();
@@ -154,9 +154,18 @@ const TaxPayer = () => {
             redirect: "follow"
         };
 
-        fetch(import.meta.env.VITE_BACK + "/gst/gstfiling", requestOptions)
-            .then((response) => response.text())
-            .then((result) => setFilingDet(JSON.parse(result)))
+        await fetch(import.meta.env.VITE_BACK + "/gst/gstfiling", requestOptions)
+            .then((response) => response.json())
+            .then((result) => {
+                console.log(result)
+                if (result.message) {
+                    toast("No Filing Details Found for this Year")
+                    toast("Change the Filing year")
+                }
+                else {
+                    setFilingDet(result)
+                }
+            })
             .catch((error) => console.error(error))
             .finally(() => setLoadingFilDetails(false));
 
@@ -239,7 +248,7 @@ const TaxPayer = () => {
                                 <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
                                     <span className="anchor sm:hidden" id="Address"></span>
                                     <h4 className="text-font-200 uppercase text-base mb-2 font-bold sm:text-s-14">Address</h4>
-                                    <small className="text-s-20 text-font-500 font-medium sm:text-base">{ getAddressString(gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr)}</small>
+                                    <small className="text-s-20 text-font-500 font-medium sm:text-base">{getAddressString(gstDetails.lstAppSCommonSearchTPResponse[0].pradr.addr)}</small>
                                 </div>
                                 <div className="w-full mb-12 pr-5 md:w-1/3 sm:w-1/2 sm:mb-6">
                                     <span className="anchor sm:hidden" id="Entity Type"></span>
