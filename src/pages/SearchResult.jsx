@@ -19,7 +19,7 @@ const SearchPage = () => {
   const fetchInfographics = async () => {
     try {
       const response = await fetch(
-        `https://utility.caclouddesk.com/infographics/search?description=${description}&tag=${tag}&page=${page}&limit=10`
+        `https://utility.caclouddesk.com/api/infographics/search?description=${description}&tag=${tag}&page=${page}&limit=10`
       );
       const data = await response.json();
       setInfographics(data.infographics);
@@ -31,7 +31,7 @@ const SearchPage = () => {
 
   const fetchTags = async () => {
     try {
-      const response = await fetch('https://utility.caclouddesk.com/infographics/tags');
+      const response = await fetch('https://utility.caclouddesk.com/api/infographics/tags');
       const data = await response.json();
       setTags(data);
     } catch (error) {

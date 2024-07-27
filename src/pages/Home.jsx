@@ -17,7 +17,7 @@ const Home = () => {
     const [infographics, setInfographics] = useState([]);
     const fetchInfographics = async () => {
         try {
-            const response = await fetch('https://utility.caclouddesk.com/infographics/categories');
+            const response = await fetch('https://utility.caclouddesk.com/api/infographics/categories');
             const data = await response.json();
             setInfographics(data);
         } catch (error) {

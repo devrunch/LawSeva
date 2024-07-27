@@ -14,7 +14,7 @@ const Infographics = ({category,count}) => {
 
   const fetchInfographics = async (page) => {
     try {
-      const response = await fetch(`https://utility.caclouddesk.com/infographics/search?description=&tag=${category||''}&page=${page}&limit=${limit}`);
+      const response = await fetch(`https://utility.caclouddesk.com/api/infographics/search?description=&tag=${category||''}&page=${page}&limit=${limit}`);
       const data = await response.json();
       setInfographics(data.infographics); // Assuming API returns infographics in a `infographics` field
       setTotalPages(data.totalPages); // Assuming API returns total pages in a `totalPages` field

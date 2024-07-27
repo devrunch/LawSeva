@@ -62,7 +62,7 @@ const InfographicDownloadPage = () => {
 
   const fetchInfographic = async () => {
     try {
-      const response = await fetch(`https://utility.caclouddesk.com/infographics/${id}`);
+      const response = await fetch(`https://utility.caclouddesk.com/api/infographics/${id}`);
       const data = await response.json();
       setInfographic(data);
     } catch (error) {
@@ -102,7 +102,7 @@ const InfographicDownloadPage = () => {
     }
 
     try {
-      const response = await fetch(`https://utility.caclouddesk.com/infographics/${id}/download`, {
+      const response = await fetch(`https://utility.caclouddesk.com/api/infographics/${id}/download`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
