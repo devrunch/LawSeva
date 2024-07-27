@@ -160,7 +160,7 @@ const TaxPayer = () => {
                 console.log(result)
                 if (result.message) {
                     toast("No Filing Details Found for this Year")
-                    toast("Change the Filing year")
+                    toast("Change the Filing year or Check GSTIN Status")
                 }
                 else {
                     setFilingDet(result)
