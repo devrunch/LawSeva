@@ -29,6 +29,10 @@ const Navbar = () => {
             <Link to="/filinginfo" className="py-7 px-3 inline-block">
               GST Filing Info
             </Link>
+          </li><li>
+            <Link to="/infographics" className="py-7 px-3 inline-block">
+              Infographics
+            </Link>
           </li>
           <li>
             <Link to="https://partner.caclouddesk.com" className="py-7 px-3 inline-block">
