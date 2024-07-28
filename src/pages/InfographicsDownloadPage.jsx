@@ -32,7 +32,7 @@ const InfographicDownloadPage = () => {
   const [downloadLink, setDownloadLink] = useState('');
   const [blobs, setBlobs] = useState(null);
   const [generating, setGenerating] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState(localStorage.getItem('formData') ? JSON.parse(localStorage.getItem('formData')) : {
     name: '',
     phone: '',
     email: '',
@@ -100,6 +100,13 @@ const InfographicDownloadPage = () => {
     if (customLogo) {
       logoBase64 = await convertToBase64(customLogo);
     }
+
+    localStorage.setItem('formData', JSON.stringify({
+      name: formData.get('name'),
+      phone: formData.get('phone'),
+      email: formData.get('email'),
+      website: formData.get('website')
+    }));
 
     try {
       const response = await fetch(`https://utility.caclouddesk.com/api/infographics/${id}/download`, {
