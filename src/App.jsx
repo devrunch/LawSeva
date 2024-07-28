@@ -9,6 +9,7 @@ import { useEffect } from "react"
 import Home from './pages/Home';
 import InfographicsDownloadPage from './pages/InfographicsDownloadPage';
 import SearchPage from './pages/SearchResult';
+import Admin from './components/Sections/Admin'
 function App() {
   useEffect(() => {
     // Get the current URL
@@ -40,6 +41,7 @@ function App() {
           <Route path="/filinginfo" element={<FillingInfo />} />
           <Route path="/" element={<GstCalculator />} />
           {/* <Route path="/test" element={<ConfirmDialog />} /> */}
+          <Route path="/infographics/12345/admin" element={<Admin/>} />
           <Route path="/infographics/" element={<Home />} />
           <Route path="/infographics/search" element={<SearchPage />} />
           <Route path="/infographics/contact" element={<h1>Contact</h1>} />
