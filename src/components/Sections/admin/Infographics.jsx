@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import CreatableSelect from 'react-select/creatable';
@@ -15,7 +16,11 @@ const Infographics = () => {
     const [totalPages, setTotalPages] = useState(1);
     useEffect(() => {
         fetchInfographics();
-        fetch('https://utility.caclouddesk.com/api/infographics/tags')
+        fetch('https://utility.caclouddesk.com/api/infographics/tags',{
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
+            },
+        })
             .then((response) => response.json())
             .then((data) => {
                 setAvailableTags(data.map((tag) => ({ value: tag, label: tag })));
@@ -53,6 +58,9 @@ const Infographics = () => {
         try {
             const response = await fetch(`https://utility.caclouddesk.com/api/infographics/${id}`, {
                 method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
+                },
             });
             if (response.ok) {
                 toast.success('Infographic deleted successfully');
@@ -76,6 +84,8 @@ const Infographics = () => {
                 body: raw,
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
+
                 },
             });
     

@@ -1,13 +1,13 @@
 import Login from './admin/Login'
 import UploadForm from './admin/UploaderForm'
 import Infographics from './admin/Infographics'
-import {useEffect,useState} from 'react'
+import { useEffect, useState } from 'react'
 const Admin = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const isAuth = async (token) => {
+    const isAuth = async () => {
         const response = await fetch('https://utility.caclouddesk.com/api/auth/admin', {
             headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
             },
         });
         const data = await response.json();
@@ -19,14 +19,11 @@ const Admin = () => {
         }
     }
     useEffect(() => {
-        const token = localStorage.getItem('jwtToken');
-        if (token) {
-            isAuth(token).then((auth) => {
-                if (auth) {
-                    setIsAuthenticated(true);
-                }
-            });
-        }
+        isAuth().then((auth) => {
+            if (auth) {
+                setIsAuthenticated(true);
+            }
+        });
     }
         , [])
     return (

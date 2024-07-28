@@ -53,6 +53,9 @@ const ImageUploadForm = () => {
         fetch('https://utility.caclouddesk.com/api/infographics/upload', {
             method: 'POST',
             body: formData,
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
+            },
         })
             .then((response) => response.json())
             .then(() => {
