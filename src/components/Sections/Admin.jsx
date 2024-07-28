@@ -5,7 +5,7 @@ import {useEffect,useState} from 'react'
 const Admin = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const isAuth = async (token) => {
-        const response = await fetch('https://utility.caclouddesk.com/api/infographics/admin', {
+        const response = await fetch('https://utility.caclouddesk.com/api/infographics/auth/admin', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
