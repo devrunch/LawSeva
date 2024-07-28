@@ -12,7 +12,7 @@ const Login = ({auth}) => {
     // https://utility.caclouddesk.com/api/infographics
     //http://localhost:3000/admin
     try {
-      const response = await fetch('https://utility.caclouddesk.com/api/infographics/admin', {
+      const response = await fetch('https://utility.caclouddesk.com/api/admin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
