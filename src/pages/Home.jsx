@@ -78,7 +78,7 @@ const Home = () => {
                     <h1 className="lg:text-7xl text-5xl font-bold font-ubuntu ">Engage Clients with Infographics</h1>
                     <p className="text-paragraph font-manrope lg:px-20">Use our expertly crafted infographic templates to boost client engagement and retention. Perfect for accountants and tax professionals, our templates turn complex information into engaging visuals.</p>
                     <div className="mx-auto">
-                        <Link to="/infographics/search" className="px-5 py-4 bg-secondary text-white hover:bg-secondaryhover transition-colors rounded-full"> Explore</Link>
+                        <Link to="/infographics/search" className="px-5 py-4 bg-secondary text-white hover:bg-secondaryhover transition-colors rounded-full">Get Started</Link>
                         <Link to="#" className="text-secondary hover:underline px-5 py-4">Learn More</Link>
                     </div>
                 </div>
