@@ -94,6 +94,7 @@ const InfographicDownloadPage = () => {
     const formData = new FormData(e.target);
     if (!selectedLogo && !customLogo) {
       toast.error('Please select a logo');
+      setGenerating(false);
       return;
     }
     let logoBase64 = selectedLogo;
