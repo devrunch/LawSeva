@@ -38,7 +38,7 @@ const Infographics = () => {
     const fetchInfographics = async () => {
         try {
             const { description, tag, page } = searchParams;
-            const response = await fetch(`https://utility.caclouddesk.com/api/infographics/search?description=${description}&tag=${tag}&page=${page}&limit=10`);
+            const response = await fetch(`https://utility.caclouddesk.com/api/infographics/search?description=${description}&tag=${tag}&page=${page}&limit=100`);
             const data = await response.json();
             // console.log(data.infographics[0].tags)
             setInfographics(data.infographics);
