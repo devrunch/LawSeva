@@ -49,7 +49,7 @@ const ImageUploadForm = () => {
         formData.append('title', title);
         formData.append('description', description);
         formData.append('tags', tags.map((tag) => tag.value) );
-
+        console.log(tags.map((tag) => tag.value))   
         fetch('https://utility.caclouddesk.com/api/infographics/upload', {
             method: 'POST',
             body: formData,

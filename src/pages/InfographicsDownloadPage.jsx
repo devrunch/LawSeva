@@ -91,11 +91,10 @@ const InfographicDownloadPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setGenerating(true);
+    let isLogo = true;
     const formData = new FormData(e.target);
     if (!selectedLogo && !customLogo) {
-      toast.error('Please select a logo');
-      setGenerating(false);
-      return;
+      isLogo = false;
     }
     let logoBase64 = selectedLogo;
     if (customLogo) {
@@ -106,7 +105,8 @@ const InfographicDownloadPage = () => {
       name: formData.get('name'),
       phone: formData.get('phone'),
       email: formData.get('email'),
-      website: formData.get('website')
+      website: formData.get('website'),
+      isLogo: isLogo
     }));
 
     try {
@@ -202,7 +202,7 @@ const InfographicDownloadPage = () => {
                   {warnings.phone && <span className='m-2 text-xs text-yellow-600'>{warnings.phone}</span>}
                 </div>
 
-                <label className='col-span-1' htmlFor="email">E-mail<span className='text-red-600'>*</span></label>
+                <label className='col-span-1' htmlFor="email">E-mail</label>
                 <div className="col-span-3">
                   <input
                     type="email"
@@ -210,12 +210,12 @@ const InfographicDownloadPage = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    required
+                    
                   />
                   {warnings.email && <span className='m-2 text-xs text-yellow-600'>{warnings.email}</span>}
                 </div>
 
-                <label className='col-span-1' htmlFor="website">Website<span className='text-red-600'>*</span></label>
+                <label className='col-span-1' htmlFor="website">Website</label>
                 <div className="col-span-3">
                   <input
                     type="text"
@@ -223,11 +223,11 @@ const InfographicDownloadPage = () => {
                     name="website"
                     value={formData.website}
                     onChange={handleChange}
-                    required
+                    
                   />
                   {warnings.website && <span className=' m-2 text-xs text-yellow-600'>{warnings.website}</span>}
                 </div>
-                <label className=' col-span-1' htmlFor="logo">Logo Upload<span className='text-red-600'>*</span></label>
+                <label className=' col-span-1' htmlFor="logo">Logo Upload</label>
                 <div className='col-span-3 flex items-center gap-5 '>
                   {predefinedLogos.map((logo) => (
                     <label key={logo.name} className="flex items-center mb-2">

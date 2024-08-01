@@ -50,6 +50,7 @@ const Infographics = () => {
 
     const handleEdit = (infographic) => {
         setEditingInfographic(infographic);
+        
         setFormData({ title: infographic.title, description: infographic.description, tags: infographic.tags });
         setImagePreview(`https://utility.caclouddesk.com/uploads/${infographic.image}`);
     };
@@ -78,6 +79,7 @@ const Infographics = () => {
             "description": formData.description,
             "tags": formData.tags,
           });
+          console.log(formData.tags)    
         try {
             const response = await fetch(`https://utility.caclouddesk.com/api/infographics/${editingInfographic._id}`, {
                 method: 'POST', // Use PUT or PATCH for updating

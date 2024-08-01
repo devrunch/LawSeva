@@ -7,21 +7,23 @@ import Common from '../components/Sections/Common';
 const SearchPage = () => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
-  const tagParam = params.get('tag');
+  let tagParam = params.get('tag');
+  let queryParam = params.get('q');
   const [infographics, setInfographics] = useState([]);
-  const [description, setDescription] = useState('');
+  const [description, setDescription] = useState(queryParam || '');
   const [tag, setTag] = useState(tagParam || '');
   const [tags, setTags] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-
-  const fetchInfographics = async () => {
+  const fetchInfographics = async (description, tag, page) => {
     try {
       const response = await fetch(
         `https://utility.caclouddesk.com/api/infographics/search?description=${description}&tag=${tag}&page=${page}&limit=10`
       );
       const data = await response.json();
+      
+      console.log({description:`https://utility.caclouddesk.com/api/infographics/search?description=${description}&tag=${tag}&page=${page}&limit=10`,data})
       setInfographics(data.infographics);
       setTotalPages(data.totalPages);
     } catch (error) {
@@ -40,20 +42,28 @@ const SearchPage = () => {
   };
 
   useEffect(() => {
-    fetchInfographics();
     fetchTags();
-  }, [page, tag, description]);
+  }, []);
+
+  useEffect(() => {
+    fetchInfographics(description, tag, page);
+  }, [page]);
+
+  useEffect(() => {
+    tagParam = params.get('tag')||'';
+    queryParam = params.get('q')||'';
+    fetchInfographics(queryParam, tagParam, page);
+  }, [location.search]);
 
   const handleSearch = (e) => {
     e.preventDefault();
     setPage(1);
     history.push(`?description=${description}&tag=${tag}`);
-    fetchInfographics();
   };
 
   return (
     <>
-      <section className='text-center py-10 space-y-6'>
+      <section className='text-center py-10 space-y-6 mt-5'>
         <h2 className="text-primary font-manrope font-semibold uppercase text-center">Explore Templates</h2>
         <h1 className='text-center text-5xl font-manrope font-bold'>Best Infographics</h1>
         <p className='text-paragraph text-base text-center lg:w-1/2 m-auto'>Browse through our selection of infographic templates designed to meet the specific needs of your work. Each template is crafted to simplify complex information and enhance your communication with clients.</p>
@@ -66,7 +76,7 @@ const SearchPage = () => {
           <div>
             <form onSubmit={handleSearch}>
               <div className="relative flex">
-                <input
+                {/* <input
                   type="search"
                   className="relative m-0 block flex-auto rounded border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none"
                   placeholder="Search by description"
@@ -75,7 +85,8 @@ const SearchPage = () => {
                   onChange={(e) => setDescription(e.target.value)}
                   id="descriptionSearch"
                   aria-describedby="button-addon2"
-                />
+                  
+                /> */}
                 <select
                   value={tag}
                   onChange={(e) => setTag(e.target.value)}
@@ -142,7 +153,7 @@ const SearchPage = () => {
           </div>
         </div>
       </section>
-      <Common/>
+      <Common />
     </>
   );
 };
