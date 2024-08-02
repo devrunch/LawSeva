@@ -4,7 +4,7 @@ import arrow2 from '../assets/info/arrow2.svg'
 import arrow3 from '../assets/info/arrow3.svg'
 import BigCard from '../components/BigCard'
 // import goldstar from '../assets/info/goldstar.svg'
-import Trending from '../components/Sections/Trending'
+// import Trending from '../components/Sections/Trending'
 import { Link } from 'react-router-dom'
 import Common from '../components/Sections/Common'
 import img from '../assets/info/12.png'
@@ -114,7 +114,7 @@ const Home = () => {
                             imgSrc={infographic.image}
                             link={`/infographic/${infographic._id}`}
                             category={infographic.tags[0]}
-                            description={infographic.description}
+                            description={infographic.title}
                         />
                     ))}
                 </div>

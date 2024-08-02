@@ -128,6 +128,7 @@ const ImageUploadForm = () => {
                             name='description'
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
+                            maxLength={80}
                             required
                         />
                     </div>

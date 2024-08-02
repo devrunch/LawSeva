@@ -4,6 +4,8 @@ import GstDetails from "./pages/GstDetails"
 import FillingInfo from './pages/FillingInfo'
 import Navbar from "./components/Navbar"
 import { ToastContainer } from "react-toastify";
+import Admin from './components/Sections/Admin'
+import InfographicsDownloadPage from './pages/InfographicsDownloadPage';
 import "react-toastify/ReactToastify.css";
 import { useEffect } from "react"
 import Infographics from "./Infographics"
@@ -34,6 +36,8 @@ function App() {
         <Navbar/>
         <ScrollToTop />
         <Routes>
+        <Route path="/infographics/download/:id" element={<InfographicsDownloadPage />} />
+          <Route path="infographics/12345/admin" element={<Admin />} />
           <Route path="/taxpayersearch" element={<GstDetails />} />
           <Route path="/gstcalculator" element={<GstCalculator />} />
           <Route path="/filinginfo" element={<FillingInfo />} />

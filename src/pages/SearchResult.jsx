@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Card from '../components/Card';
 import arrow2 from '../assets/info/arrow2.svg';
 import Common from '../components/Sections/Common';
 
 const SearchPage = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const params = new URLSearchParams(location.search);
   let tagParam = params.get('tag');
   let queryParam = params.get('q');
@@ -58,12 +59,12 @@ const SearchPage = () => {
   const handleSearch = (e) => {
     e.preventDefault();
     setPage(1);
-    history.push(`?description=${description}&tag=${tag}`);
+    navigate(`?description=${description}&tag=${tag}`);
   };
 
   return (
     <>
-      <section className='text-center py-10 space-y-6 mt-5'>
+      <section className='text-center py-10 space-y-6 mt-10'>
         <h2 className="text-primary font-manrope font-semibold uppercase text-center">Explore Templates</h2>
         <h1 className='text-center text-5xl font-manrope font-bold'>Best Infographics</h1>
         <p className='text-paragraph text-base text-center lg:w-1/2 m-auto'>Browse through our selection of infographic templates designed to meet the specific needs of your work. Each template is crafted to simplify complex information and enhance your communication with clients.</p>
@@ -129,7 +130,7 @@ const SearchPage = () => {
                 ids={infographic._id}
                 imageUrl={`https://utility.caclouddesk.com/uploads/footer-${infographic.image}`}
                 downloads={infographic.downloads || '0'}
-                tags={infographic.tags || ['General']}
+                tags={infographic.tags[0] || ['General']}
                 description={infographic.description}
                 title={infographic.title}
               />
