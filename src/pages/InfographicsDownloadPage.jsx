@@ -46,11 +46,19 @@ const InfographicDownloadPage = () => {
     website: ''
   });
 
+  const limit = {
+    name: 20,
+    phone: 13,
+    email: 25,
+    website: 15
+
+  }
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
 
-    if (value.length > 20) {
+    if (value.length > limit[name]) {
       setWarnings({ ...warnings, [name]: 'Warning: Input length may affect the output' });
     } else {
       setWarnings({ ...warnings, [name]: '' });
@@ -185,8 +193,9 @@ const InfographicDownloadPage = () => {
                     value={formData.name}
                     onChange={handleChange}
                     required
+                    maxLength={limit.name+1}
                   />
-                  {warnings.name && <span className='m-2 text-xs text-yellow-600'>{warnings.name}</span>}
+                  {warnings.name && <span className='m-2 text-xs text-red-600'>{warnings.name}</span>}
                 </div>
 
                 <label className='col-span-1' htmlFor="phone">Phone<span className='text-red-600'>*</span></label>
@@ -198,8 +207,9 @@ const InfographicDownloadPage = () => {
                     value={formData.phone}
                     onChange={handleChange}
                     required
+                    maxLength={limit.phone+1}
                   />
-                  {warnings.phone && <span className='m-2 text-xs text-yellow-600'>{warnings.phone}</span>}
+                  {warnings.phone && <span className='m-2 text-xs text-red-600'>{warnings.phone}</span>}
                 </div>
 
                 <label className='col-span-1' htmlFor="email">E-mail</label>
@@ -210,9 +220,9 @@ const InfographicDownloadPage = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    
+                    maxLength={limit.email+1}
                   />
-                  {warnings.email && <span className='m-2 text-xs text-yellow-600'>{warnings.email}</span>}
+                  {warnings.email && <span className='m-2 text-xs text-red-600'>{warnings.email}</span>}
                 </div>
 
                 <label className='col-span-1' htmlFor="website">Website</label>
@@ -223,9 +233,10 @@ const InfographicDownloadPage = () => {
                     name="website"
                     value={formData.website}
                     onChange={handleChange}
+                    maxLength={limit.website+1}
                     
                   />
-                  {warnings.website && <span className=' m-2 text-xs text-yellow-600'>{warnings.website}</span>}
+                  {warnings.website && <span className=' m-2 text-xs text-red-600'>{warnings.website}</span>}
                 </div>
                 <label className=' col-span-1' htmlFor="logo">Logo Upload</label>
                 <div className='col-span-3 flex items-center gap-5 '>
