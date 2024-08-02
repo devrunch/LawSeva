@@ -301,7 +301,7 @@ const InfographicDownloadPage = () => {
                 ))}
               </div>
               <div >
-                <button type='submit' disabled={generating} className='bg-[#31A6C7] font-bold text-white px-8 py-2 mt-5 rounded-md hover:text-secondary hover:bg-white hover:border-secondary border-2 border-transparent transition-all'>Generate</button>
+                <button type='submit' disabled={generating} className='bg-[#31A6C7] font-bold text-white px-8 py-2 mt-5 rounded-md hover:text-secondary hover:bg-white hover:border-secondary border-2 border-transparent transition-all'>View</button>
               </div>
             </form>
           </div>
@@ -342,14 +342,6 @@ const InfographicDownloadPage = () => {
               className=" flex items-center bg-white text-black px-4 py-2 rounded-md hover:text-secondary hover:bg-white hover:border-secondary border-2 border-gray-700 transition-all"
             >
               Share
-              <svg width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M16.7394 8.26091C18.2522 8.26091 19.4785 7.03456 19.4785 5.52178C19.4785 4.009 18.2522 2.78265 16.7394 2.78265C15.2266 2.78265 14.0002 4.009 14.0002 5.52178C14.0002 7.03456 15.2266 8.26091 16.7394 8.26091Z" stroke="#3C4242" stroke-width="1.82609" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M5.78283 14.6522C7.29561 14.6522 8.52196 13.4259 8.52196 11.9131C8.52196 10.4003 7.29561 9.17395 5.78283 9.17395C4.27005 9.17395 3.0437 10.4003 3.0437 11.9131C3.0437 13.4259 4.27005 14.6522 5.78283 14.6522Z" stroke="#3C4242" stroke-width="1.82609" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M16.7394 21.0435C18.2522 21.0435 19.4785 19.8172 19.4785 18.3044C19.4785 16.7916 18.2522 15.5652 16.7394 15.5652C15.2266 15.5652 14.0002 16.7916 14.0002 18.3044C14.0002 19.8172 15.2266 21.0435 16.7394 21.0435Z" stroke="#3C4242" stroke-width="1.82609" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M8.14771 13.2917L14.3838 16.9257" stroke="#3C4242" stroke-width="1.82609" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M14.3747 6.90045L8.14771 10.5344" stroke="#3C4242" stroke-width="1.82609" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-
             </button>
           </div>
         </div>
