@@ -324,7 +324,7 @@ const InfographicDownloadPage = () => {
         overlayClassName="fixed inset-0 bg-black bg-opacity-50"
       >
         <div className="bg-white p-8 rounded-lg shadow-lg max-w-lg w-full flex flex-col justify-center items-center">
-          <div className='w-full flex items-center justify-between'>
+          <div className='w-full flex items-center justify-end'>
             <button onClick={() => setShowModal(false)}>
               <svg width="30" height="30" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M28.5 9.5L9.5 28.5" stroke="#7D7D7D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
