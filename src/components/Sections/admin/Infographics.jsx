@@ -161,7 +161,7 @@ const Infographics = () => {
                 />
                 <CreatableSelect
                     options={[{label:"None",value:""},...availableTags]}
-                    placeholder="Search by tags"
+                    placeholder="Search by Categories"
                     onChange={(selectedTags) => {console.log(selectedTags); setSearchTags(searchTags); handleSearchChange({ target: { name: 'tag', value: selectedTags.value } })}}
                     className="border rounded-md p-2 w-4/12 mb-2"
                 />

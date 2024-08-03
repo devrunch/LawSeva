@@ -1,21 +1,21 @@
-import { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useState, useEffect, useContext } from 'react';
 import Card from '../components/Card';
 import arrow2 from '../assets/info/arrow2.svg';
 import Common from '../components/Sections/Common';
+import { SearchContext } from '../Infographics';
+import StickySearchBar from '../components/StickySearchBar';
+import useDebouncedEffect from '../components/hooks/useDebouncedEffect';
 
 const SearchPage = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
+  const { searchTerm } = useContext(SearchContext);
   const params = new URLSearchParams(location.search);
-  let tagParam = params.get('tag');
-  let queryParam = params.get('q');
+  const tagParam = params.get('tag');
   const [infographics, setInfographics] = useState([]);
-  const [description, setDescription] = useState(queryParam || '');
   const [tag, setTag] = useState(tagParam || '');
   const [tags, setTags] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
 
   const fetchInfographics = async (description, tag, page) => {
     try {
@@ -23,8 +23,7 @@ const SearchPage = () => {
         `https://utility.caclouddesk.com/api/infographics/search?description=${description}&tag=${tag}&page=${page}&limit=10`
       );
       const data = await response.json();
-      
-      console.log({description:`https://utility.caclouddesk.com/api/infographics/search?description=${description}&tag=${tag}&page=${page}&limit=10`,data})
+      console.log({ description: `https://utility.caclouddesk.com/api/infographics/search?description=${description}&tag=${tag}&page=${page}&limit=10`, data });
       setInfographics(data.infographics);
       setTotalPages(data.totalPages);
     } catch (error) {
@@ -46,48 +45,37 @@ const SearchPage = () => {
     fetchTags();
   }, []);
 
-  useEffect(() => {
-    fetchInfographics(description, tag, page);
-  }, [page]);
+  useDebouncedEffect(
+    () => {
+      setDebouncedSearchTerm(searchTerm);
+    },
+    [searchTerm],
+    1000
+  );
 
   useEffect(() => {
-    tagParam = params.get('tag')||'';
-    queryParam = params.get('q')||'';
-    fetchInfographics(queryParam, tagParam, page);
-  }, [location.search]);
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    setPage(1);
-    navigate(`?description=${description}&tag=${tag}`);
-  };
+    fetchInfographics(debouncedSearchTerm, tag, page);
+  }, [debouncedSearchTerm, tag, page]);
 
   return (
     <>
-      <section className='text-center py-10 space-y-6 mt-10'>
+      <section className="flex flex-col items-center justify-center py-10 space-y-6 mt-10">
         <h2 className="text-primary font-manrope font-semibold uppercase text-center">Explore Templates</h2>
-        <h1 className='text-center text-5xl font-manrope font-bold'>Best Infographics</h1>
-        <p className='text-paragraph text-base text-center lg:w-1/2 m-auto'>Browse through our selection of infographic templates designed to meet the specific needs of your work. Each template is crafted to simplify complex information and enhance your communication with clients.</p>
+        <h1 className="text-center text-5xl font-manrope font-bold">Best Infographics</h1>
+        <p className="text-paragraph text-base text-center lg:w-1/2 m-auto">
+          Browse through our selection of infographic templates designed to meet the specific needs of your work.
+          Each template is crafted to simplify complex information and enhance your communication with clients.
+        </p>
+        <div className="w-1/2">
+          <StickySearchBar />
+        </div>
       </section>
-      <section className='px-2 lg:px-20 space-y-8'>
-        <div className='flex justify-between items-center'>
+      <section className="px-2 lg:px-20 space-y-8">
+        <div className="flex justify-between items-center">
+          <div>Showing Page: {page} of {totalPages}</div>
           <div>
-            Showing Page: {page} of {totalPages}
-          </div>
-          <div>
-            <form onSubmit={handleSearch}>
+            <form onSubmit={(e) => e.preventDefault()}>
               <div className="relative flex">
-                {/* <input
-                  type="search"
-                  className="relative m-0 block flex-auto rounded border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none"
-                  placeholder="Search by description"
-                  aria-label="Search"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  id="descriptionSearch"
-                  aria-describedby="button-addon2"
-                  
-                /> */}
                 <select
                   value={tag}
                   onChange={(e) => setTag(e.target.value)}
@@ -100,7 +88,7 @@ const SearchPage = () => {
                   ))}
                 </select>
                 <button
-                  type='submit'
+                  type="submit"
                   className="flex items-center whitespace-nowrap px-3 py-[0.25rem] text-surface [&>svg]:h-5 [&>svg]:w-5 ml-2"
                   id="button-addon2"
                 >

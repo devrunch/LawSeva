@@ -45,6 +45,12 @@ const InfographicDownloadPage = () => {
     email: '',
     website: ''
   });
+  const warnnings = {
+    name: 'Name can be upto 20 characters',
+    phone: 'Phone number can be upto 13 characters',
+    email: 'Email can only be upto 25 characters',
+    website: 'Website can only be upto 15 characters'
+  }
 
   const limit = {
     name: 20,
@@ -59,7 +65,7 @@ const InfographicDownloadPage = () => {
     setFormData({ ...formData, [name]: value });
 
     if (value.length > limit[name]) {
-      setWarnings({ ...warnings, [name]: 'Warning: Input length may affect the output' });
+      setWarnings({ ...warnings, [name]: warnnings[name] });
     } else {
       setWarnings({ ...warnings, [name]: '' });
     }
@@ -114,7 +120,6 @@ const InfographicDownloadPage = () => {
       phone: formData.get('phone'),
       email: formData.get('email'),
       website: formData.get('website'),
-      isLogo: isLogo
     }));
 
     try {
@@ -129,6 +134,7 @@ const InfographicDownloadPage = () => {
             phone: formData.get('phone'),
             email: formData.get('email'),
             website: formData.get('website'),
+            isLogo: isLogo,
             logoBase64: logoBase64,
           },
           bgColor: selectedColor,

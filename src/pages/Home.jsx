@@ -5,6 +5,7 @@ import arrow3 from '../assets/info/arrow3.svg'
 import BigCard from '../components/BigCard'
 // import goldstar from '../assets/info/goldstar.svg'
 // import Trending from '../components/Sections/Trending'
+import caLady from '../assets/chartedAccountent.png'
 import { Link } from 'react-router-dom'
 import Common from '../components/Sections/Common'
 import img from '../assets/info/12.png'
@@ -13,6 +14,7 @@ import { useEffect } from 'react'
 import TopPicks from '../components/Sections/TopPicks'
 import imagess from '../assets/info/Group266.svg'
 import hi5 from '../assets/info/5.png'
+import StickySearchBar from '../components/StickySearchBar'
 const Home = () => {
     const [infographics, setInfographics] = useState([]);
     const fetchInfographics = async () => {
@@ -65,7 +67,7 @@ const Home = () => {
                             &quot;These infographic templates have transformed how I present complex financial data to clients. Easy to use and highly professional!&quot;
                         </p>
                         <div className='flex items-center gap-x-2'>
-                            <div className='w-10 h-10 rounded-full bg-primary2'></div>
+                            <div className='w-10 h-10 rounded-full bg-primary2 overflow-hidden'><img src={caLady} alt="" /></div>
                             <div>
                                 <p className='font-bold font-manrope '>Priya S</p>
                                 <p className='text-xs font-dmsans text-paragraph'>Chartered Accountant</p>
@@ -74,12 +76,13 @@ const Home = () => {
                     </div>
                 </div>
                 <div className="lg:w-1/2 text-center space-y-10">
+                    <StickySearchBar/>
                     <h2 className="text-primary font-manrope font-semibold uppercase">Professional Infographic Templates</h2>
                     <h1 className="lg:text-6xl text-5xl font-bold font-ubuntu ">Engage Clients with<br/> Infographics</h1>
                     <p className="text-paragraph font-manrope lg:px-20">Use our expertly crafted infographic templates to boost client engagement and retention. Perfect for accountants and tax professionals, our templates turn complex information into engaging visuals.</p>
                     <div className="mx-auto">
                         <Link to="/infographics/search" className="px-5 py-4 bg-secondary text-white hover:bg-secondaryhover transition-colors rounded-full">Get Started</Link>
-                        <Link to="#" className="text-secondary hover:underline px-5 py-4">Learn More</Link>
+                        <Link to="https://www.caclouddesk.com/" className="text-secondary hover:underline px-5 py-4">Learn More</Link>
                     </div>
                 </div>
                 <div className="w-1/4 lg:flex hidden flex-col  space-y-10">
