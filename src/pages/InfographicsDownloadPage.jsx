@@ -426,7 +426,7 @@ const InfographicDownloadPage = () => {
             </button>
 
           </div>
-          <img src={downloadLink} alt="Infographic Preview" className="h-[70vh] mb-4" />
+          <img src={downloadLink} alt="Infographic Preview" className="object-contain mb-4" />
           <div className='w-full flex justify-end gap-x-5'>
 
             <button
