@@ -16,11 +16,13 @@ const SearchPage = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
-
+  useEffect(() => {
+    window.scrollTo({ top: 200, behavior: 'smooth' });
+  }, [page]);
   const fetchInfographics = async (description, tag, page) => {
     try {
       const response = await fetch(
-        `https://utility.caclouddesk.com/api/infographics/search?description=${description}&tag=${tag}&page=${page}&limit=10`
+        `https://utility.caclouddesk.com/api/infographics/search?description=${description}&tag=${tag}&page=${page}&limit=12`
       );
       const data = await response.json();
       console.log({ description: `https://utility.caclouddesk.com/api/infographics/search?description=${description}&tag=${tag}&page=${page}&limit=10`, data });
@@ -128,7 +130,7 @@ const SearchPage = () => {
             <button
               disabled={page <= 1}
               onClick={() => setPage(page - 1)}
-              className={`px-4 py-2 rounded ${page === 1 ? '' : 'bg-blue-500 text-white'}`}
+              className={`px-4 py-2 rounded ${page === 1 ? '' : 'text-white'}`}
             >
               <img src={arrow2} alt="" className={`w-8 rotate-180 ${page === 1 ? 'saturate-0' : ''}`} />
             </button>
