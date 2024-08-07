@@ -69,9 +69,20 @@ const InfographicDownloadPage = () => {
       setWarnings({ ...warnings, [name]: '' });
     }
   };
+
   useEffect(() => {
+    if (localStorage.getItem('formData')) {
+      let tp = JSON.parse(localStorage.getItem('formData'))
+      let w={};
+      for (let key in tp) {
+        if(tp[key].length > limit[key]){
+          w[key]  = warnnings[key]
+        }
+      }
+      setWarnings(w)
+    }
     fetchInfographic();
-  }, [id]);
+  }, []);
 
   const fetchInfographic = async () => {
     try {
@@ -188,10 +199,10 @@ const InfographicDownloadPage = () => {
 
               <img src={`https://utility.caclouddesk.com/uploads/${infographic.image}`} alt="Infographic" className="m-auto shadow-lg w-full md:w-[450px] " />
               <div className='h-[60px] md:h-[80px] w-full md:w-[450px] m-auto flex justify-center items-center gap-x-[20px]' style={{ background: selectedColor }}>
-                {selectedLogo || customLogo ?<div className="logo rounded-full overflow-hidden flex justify-center items-center bg-white">
+                {selectedLogo || customLogo ? <div className="logo rounded-full overflow-hidden flex justify-center items-center bg-white">
                   <img src={selectedLogo ? selectedLogo : customLogo ? URL.createObjectURL(customLogo) : "https://as2.ftcdn.net/v2/jpg/04/78/56/33/1000_F_478563312_HuepEVbPHRGC0dsbXOXL1YSuFIkWEm2m.jpg"} className='h-[40px] w-[50px] md:w-[70px] md:h-[70px] rounded-[100%]' alt="" />
-                </div>:''}
-                <div className="info grid grid-cols-2 gap-x-5 gap-y-3 "> 
+                </div> : ''}
+                <div className="info grid grid-cols-2 gap-x-5 gap-y-3 ">
                   <div className="infowrap flex items-center">
                     <svg
                       width="15px"
@@ -319,7 +330,7 @@ const InfographicDownloadPage = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    maxLength={limit.email + 1}
+                    maxLength={limit.email }
                   />
                   {warnings.email && <span className='m-2 text-xs text-red-600'>{warnings.email}</span>}
                 </div>
