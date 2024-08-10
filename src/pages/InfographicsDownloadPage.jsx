@@ -13,7 +13,8 @@ const colors = [
   { name: 'green', hex: '#34d399' },
   { name: 'blue', hex: '#60a5fa' },
   { name: 'yellow', hex: '#fbbf24' },
-  { name: 'purple', hex: '#a78bfa' }
+  { name: 'purple', hex: '#a78bfa' },
+  { name: 'black', hex: '#000' }
 ];
 
 const predefinedLogos = [
