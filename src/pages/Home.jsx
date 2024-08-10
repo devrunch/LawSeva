@@ -111,7 +111,7 @@ const Home = () => {
                 <h1 className='text-center text-5xl font-manrope font-bold'>Discover Diverse Infographic Templates</h1>
                 <p className='text-paragraph text-base text-center '>Browse through our extensive collection of infographic templates designed to cater to<br /> various needs of accountants, tax professionals, and more.</p>
                 <div className='flex flex-wrap gap-3 justify-center items-stretch overflow-hidden lg:gap-x-16 lg:px-16'>
-                    {infographics && infographics.slice(0, 6).map((infographic, index) => (
+                    {infographics && infographics.slice(0, 15).map((infographic, index) => (
                         <BigCard
                             key={index}
                             imgSrc={infographic.image}

@@ -18,6 +18,19 @@ export default {
         manrope:"Manrope",
         ubuntu:"Ubuntu",
         dmsans:"DM Sans",
+      },
+      keyframes: {
+        blink: {
+          '0%, 100%': { opacity: 0 },
+          '50%': { opacity: 1 },
+        },
+      },
+      animation: {
+        blink: 'blink 1s infinite',
+      },
+      spacing: {
+        200: '200ms',
+        400: '400ms',
       }
     },
   },
