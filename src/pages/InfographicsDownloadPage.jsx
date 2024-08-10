@@ -53,7 +53,7 @@ const InfographicDownloadPage = () => {
   }
 
   const limit = {
-    name: 20,
+    name: 30,
     phone: 13,
     email: 25,
     website: 15
