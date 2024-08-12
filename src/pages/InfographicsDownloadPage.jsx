@@ -25,17 +25,17 @@ const predefinedLogos = [
 ];
 
 const warnnings = {
-  name: 'Name can be upto 20 characters',
-  phone: 'Phone number can be upto 13 characters',
-  email: 'Email can only be upto 25 characters',
-  website: 'Website can only be upto 15 characters'
+  name: 'Name can be upto 50 characters',
+  phone: 'Phone number can be upto 15 characters',
+  email: 'Email can only be upto 50 characters',
+  website: 'Website can only be upto 50 characters'
 }
 
 const limit = {
-  name: 30,
-  phone: 13,
-  email: 25,
-  website: 15
+  name: 50,
+  phone: 15,
+  email: 50,
+  website: 50
 
 }
 
