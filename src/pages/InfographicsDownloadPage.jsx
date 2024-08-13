@@ -70,18 +70,24 @@ const InfographicDownloadPage = () => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem('formData')) {
-      let tp = JSON.parse(localStorage.getItem('formData'))
-      let w = {};
-      for (let key in tp) {
-        if (tp[key].length > limit[key]) {
-          w[key] = warnnings[key]
+    const formData = localStorage.getItem('formData');
+    if (formData) {
+        try {
+            let tp = JSON.parse(formData);
+            let w = {};
+            for (let key in tp) {
+                if (tp[key].length > limit[key]) {
+                    w[key] = warnings[key];
+                }
+            }
+            setWarnings(w);
+        } catch (error) {
+            console.error('Error parsing formData:', error);
         }
-      }
-      setWarnings(w)
     }
     fetchInfographic();
-  }, []);
+}, []);
+
 
   const fetchInfographic = async () => {
     try {
