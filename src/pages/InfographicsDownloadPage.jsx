@@ -28,15 +28,12 @@ const warnnings = {
   name: 'Name can be upto 50 characters',
   phone: 'Phone number can be upto 15 characters',
   email: 'Email can only be upto 50 characters',
-  website: 'Website can only be upto 50 characters'
 }
 
 const limit = {
-  name: 50,
+  name: 45,
   phone: 15,
   email: 50,
-  website: 50
-
 }
 
 const InfographicDownloadPage = () => {
@@ -53,14 +50,12 @@ const InfographicDownloadPage = () => {
     name: '',
     phone: '',
     email: '',
-    website: ''
   });
 
   const [warnings, setWarnings] = useState({
     name: '',
     phone: '',
     email: '',
-    website: ''
   });
 
   const handleChange = (e) => {
@@ -132,8 +127,7 @@ const InfographicDownloadPage = () => {
     localStorage.setItem('formData', JSON.stringify({
       name: formData.get('name'),
       phone: formData.get('phone'),
-      email: formData.get('email'),
-      website: formData.get('website'),
+      email: formData.get('email')
     }));
 
     try {
