@@ -8,7 +8,7 @@ const PreviewComponent = ({ imgLink, footerInfo, bgColor ,logo}) => {
         className="w-full h-auto object-cover"
       />
       <div
-        className={`w-full h-[100px] ${bgColor ? '' : 'bg-black'} flex justify-start gap-x-1 px-2 items-center`}
+        className={`w-full h-[100px] font-bold ${bgColor ? '' : 'bg-black'} flex justify-start gap-x-1 px-2 items-center`}
         style={{ backgroundColor: bgColor || '#000' }}
       >
         <div className={`w-1/6 h-full flex justify-center items-center `}>
