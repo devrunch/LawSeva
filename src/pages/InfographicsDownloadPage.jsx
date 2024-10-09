@@ -8,7 +8,7 @@ import upload from '../assets/info/upload.svg';
 import Modal from 'react-modal';
 import Common from '../components/Sections/Common';
 import PreviewComponent from '../components/PreviewComponent';
-
+import Infographics from '../components/InfographicsGrid';
 const colors = [
   { name: 'red', hex: '#f87171' },
   { name: 'green', hex: '#34d399' },
@@ -315,6 +315,11 @@ const InfographicDownloadPage = () => {
             </form>
           </div>
         </div>
+        <section className='features mt-8'>
+        {/* <h2 className="text-primary font-manrope font-semibold uppercase text-center">Similar Infographics</h2> */}
+            {/* <h1 className='text-center text-5xl font-manrope font-bold'>Trending Infographic Templates</h1> */}
+        <Infographics  category={infographic.tags[0]} count={4}/>
+        </section>
         <Trending />
         <Common />
       </div>
