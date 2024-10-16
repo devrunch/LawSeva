@@ -10,7 +10,7 @@ const Infographics = ({category,count}) => {
 
   useEffect(() => {
     fetchInfographics(currentPage);
-  }, [currentPage]);
+  }, []);
 
   const fetchInfographics = async (page) => {
     try {

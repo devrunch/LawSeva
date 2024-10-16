@@ -1,5 +1,3 @@
-import { Link } from "react-router-dom";
-
 /* eslint-disable react/prop-types */
 const Card = ({ imageUrl, tags, title, ids,description }) => {
   return (
@@ -18,9 +16,9 @@ const Card = ({ imageUrl, tags, title, ids,description }) => {
       <p className='font-manrope text-xs text-paragraph text-left px-3'>{description}</p>
       </div>
       <div className='flex justify-center px-3'>
-        <Link to={`/infographics/download/${ids}`} className="w-full text-center py-1 bg-secondary text-white hover:bg-secondaryhover transition-colors rounded-full">
+        <a href={`/infographics/download/${ids}`} className="w-full text-center py-1 bg-secondary text-white hover:bg-secondaryhover transition-colors rounded-full">
           Select
-        </Link>
+        </a>
       </div>
     </div>
   );

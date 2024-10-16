@@ -318,8 +318,8 @@ const InfographicDownloadPage = () => {
         <section className='features mt-8'>
         {/* <h2 className="text-primary font-manrope font-semibold uppercase text-center">Similar Infographics</h2> */}
             {/* <h1 className='text-center text-5xl font-manrope font-bold'>Trending Infographic Templates</h1> */}
-        <Infographics  category={infographic.tags[0]} count={4}/>
         </section>
+        <Infographics  category={infographic.tags[0]} count={4}/>
         <Trending />
         <Common />
       </div>
