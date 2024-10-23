@@ -3,7 +3,6 @@ import { Route } from 'react-router-dom'
 import Home from './pages/Home';
 import SearchPage from './pages/SearchResult';
 import { Routes } from 'react-router-dom';
-import StickySearchBar from './components/StickySearchBar';
 import { useState, createContext } from 'react';
 
 

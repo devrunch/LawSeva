@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-unknown-property */
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -319,7 +320,7 @@ const InfographicDownloadPage = () => {
         {/* <h2 className="text-primary font-manrope font-semibold uppercase text-center">Similar Infographics</h2> */}
             {/* <h1 className='text-center text-5xl font-manrope font-bold'>Trending Infographic Templates</h1> */}
         </section>
-        <Infographics  category={infographic.tags[0]} count={4}/>
+        <Infographics  description={infographic.title +' '+infographic.description} category={infographic.tags[0]} count={4}/>
         <Trending />
         <Common />
       </div>
