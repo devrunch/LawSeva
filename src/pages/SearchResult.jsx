@@ -5,13 +5,16 @@ import Common from '../components/Sections/Common';
 import { SearchContext } from '../Infographics';
 import StickySearchBar from '../components/StickySearchBar';
 import useDebouncedEffect from '../components/hooks/useDebouncedEffect';
+import { useRef } from 'react';
 
 const SearchPage = () => {
+  const isFirstRender = useRef(true);
   const { searchTerm } = useContext(SearchContext);
   const params = new URLSearchParams(location.search);
   const tagParam = params.get('tag');
   const [infographics, setInfographics] = useState([]);
-  const [tag, setTag] = useState(tagParam || '');
+  const [tag, setTag] = useState(decodeURIComponent(tagParam) || '');
+  console.log((tag))
   const [tags, setTags] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -53,10 +56,23 @@ const SearchPage = () => {
     [searchTerm],
     1000
   );
-
   useEffect(() => {
+    if (isFirstRender.current) {
+      // Skip the first render
+      isFirstRender.current = false;
+    } else {
+      if (tag !== '') {
+        setTag(''); // Reset the tag only if it’s not already an empty string
+      } else {
+        fetchInfographics(debouncedSearchTerm, '', page);
+      }
+    }
+  }, [debouncedSearchTerm]);
+  
+  useEffect(() => {
+    console.log("object2")
     fetchInfographics(debouncedSearchTerm, tag, page);
-  }, [debouncedSearchTerm, tag, page]);
+  }, [tag, page]);
 
   return (
     <>
