@@ -21,11 +21,10 @@ const SearchPage = () => {
   }, [page]);
   const fetchInfographics = async (description, tag, page) => {
     try {
-      const response = await fetch(
-        `https://utility.caclouddesk.com/api/infographics/search?description=${description}&tag=${tag}&page=${page}&limit=12`
-      );
+      const encodedDescription = encodeURIComponent(description || '');
+      const encodedCategory = encodeURIComponent(tag || '');
+      const response = await fetch(`https://utility.caclouddesk.com/api/infographics/search?description=${encodedDescription}&tag=${encodedCategory}&page=${page}`);
       const data = await response.json();
-      console.log({ description: `https://utility.caclouddesk.com/api/infographics/search?description=${description}&tag=${tag}&page=${page}&limit=10`, data });
       setInfographics(data.infographics);
       setTotalPages(data.totalPages);
     } catch (error) {
