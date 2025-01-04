@@ -13,8 +13,7 @@ const SearchPage = () => {
   const params = new URLSearchParams(location.search);
   const tagParam = params.get('tag');
   const [infographics, setInfographics] = useState([]);
-  const [tag, setTag] = useState(decodeURIComponent(tagParam) || '');
-  console.log((tag))
+  const [tag, setTag] = useState((tagParam) || '');
   const [tags, setTags] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -67,12 +66,11 @@ const SearchPage = () => {
         fetchInfographics(debouncedSearchTerm, '', page);
       }
     }
-  }, [debouncedSearchTerm]);
+  }, [debouncedSearchTerm, page, tag]);
   
   useEffect(() => {
-    console.log("object2")
-    fetchInfographics(debouncedSearchTerm, tag, page);
-  }, [tag, page]);
+    fetchInfographics(debouncedSearchTerm, tag||'', page);
+  }, [tag, page, debouncedSearchTerm]);
 
   return (
     <>
