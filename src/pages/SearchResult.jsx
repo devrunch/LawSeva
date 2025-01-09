@@ -5,6 +5,7 @@ import Common from '../components/Sections/Common';
 import { SearchContext } from '../Infographics';
 import StickySearchBar from '../components/StickySearchBar';
 import useDebouncedEffect from '../components/hooks/useDebouncedEffect';
+import Spinner from '../components/Spinner';
 
 const SearchPage = () => {
   const { searchTerm } = useContext(SearchContext);
@@ -137,6 +138,8 @@ const SearchPage = () => {
                 No infographics matching &quot;{debouncedSearchTerm}&quot; {tag && `in category "${tag}"`}
               </div>
               }
+              <Spinner state={loading} />
+              
           <div className="flex justify-between items-center mt-4">
             <button
               disabled={page <= 1}
