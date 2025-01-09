@@ -5,10 +5,8 @@ import Common from '../components/Sections/Common';
 import { SearchContext } from '../Infographics';
 import StickySearchBar from '../components/StickySearchBar';
 import useDebouncedEffect from '../components/hooks/useDebouncedEffect';
-import { useRef } from 'react';
 
 const SearchPage = () => {
-  const isFirstRender = useRef(true);
   const { searchTerm } = useContext(SearchContext);
   const params = new URLSearchParams(location.search);
   const tagParam = params.get('tag');
@@ -55,18 +53,7 @@ const SearchPage = () => {
     [searchTerm],
     1000
   );
-  useEffect(() => {
-    if (isFirstRender.current) {
-      // Skip the first render
-      isFirstRender.current = false;
-    } else {
-      if (tag !== '') {
-        setTag(''); // Reset the tag only if it’s not already an empty string
-      } else {
-        fetchInfographics(debouncedSearchTerm, '', page);
-      }
-    }
-  }, [debouncedSearchTerm, page, tag]);
+
   
   useEffect(() => {
     fetchInfographics(debouncedSearchTerm, tag||'', page);
@@ -127,7 +114,7 @@ const SearchPage = () => {
         </div>
         <div className="container mx-auto p-4">
           <div className="w-5/6 m-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {infographics.map((infographic) => (
+            {infographics.length >0 && infographics.map((infographic) => (
               <Card
                 key={infographic._id}
                 ids={infographic._id}
@@ -139,6 +126,12 @@ const SearchPage = () => {
               />
             ))}
           </div>
+           {
+            infographics.length === 0 &&
+              <div className="w-full flex justify-center items-center text-4xl text-black font-manrope font-semibold text-center">
+                No infographics matching &quot;{debouncedSearchTerm}&quot; {tag && `in category "${tag}"`}
+              </div>
+              }
           <div className="flex justify-between items-center mt-4">
             <button
               disabled={page <= 1}
