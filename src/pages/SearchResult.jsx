@@ -16,11 +16,13 @@ const SearchPage = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
+  const [loading,setLoading] = useState(false)
   useEffect(() => {
     window.scrollTo({ top: 200, behavior: 'smooth' });
   }, [page]);
   const fetchInfographics = async (description, tag, page) => {
     try {
+      setLoading(true)
       const encodedDescription = encodeURIComponent(description || '');
       const encodedCategory = encodeURIComponent(tag || '');
       const response = await fetch(`https://utility.caclouddesk.com/api/infographics/search?description=${encodedDescription}&tag=${encodedCategory}&page=${page}`);
@@ -29,6 +31,9 @@ const SearchPage = () => {
       setTotalPages(data.totalPages);
     } catch (error) {
       console.error('Error fetching infographics:', error);
+    }
+    finally{
+      setLoading(false)
     }
   };
 
@@ -127,7 +132,7 @@ const SearchPage = () => {
             ))}
           </div>
            {
-            infographics.length === 0 &&
+            infographics.length === 0 && loading === false &&
               <div className="w-full flex justify-center items-center text-4xl text-black font-manrope font-semibold text-center">
                 No infographics matching &quot;{debouncedSearchTerm}&quot; {tag && `in category "${tag}"`}
               </div>
