@@ -45,6 +45,26 @@ const ImageUploadForm = () => {
         setLoading(true);
 
         const formData = new FormData();
+        if (!imageFile) {
+            toast.error('Please upload an image');
+            setLoading(false);
+            return;
+        }
+        if (!title) {
+            toast.error('Please enter a title');
+            setLoading(false);
+            return;
+        }
+        if (!description) {
+            toast.error('Please enter a description');
+            setLoading(false);
+            return;
+        }
+        if (tags.length === 0) {
+            toast.error('Please select at least one category');
+            setLoading(false);
+            return;
+        }
         formData.append('image', imageFile);
         formData.append('title', title);
         formData.append('description', description);

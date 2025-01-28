@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 const PreviewComponent = ({ imgLink, footerInfo, bgColor ,logo}) => {
   return (
-    <div className="md:w-[540px] w-[360px] ">
+    <div className="md:w-[540px] w-[360px] border-2 border-gray-200 shadow-md rounded-lg overflow-hidden">
       <img
         src={`https://utility.caclouddesk.com/uploads/${imgLink}`}
         alt="Background"

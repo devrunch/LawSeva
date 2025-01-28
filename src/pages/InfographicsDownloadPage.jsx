@@ -47,6 +47,7 @@ const InfographicDownloadPage = () => {
   const [downloadLink, setDownloadLink] = useState('');
   const [blobs, setBlobs] = useState(null);
   const [generating, setGenerating] = useState(false);
+  const [isShareOrDownload, setIsShareOrDownload] = useState(false);
   const [formData, setFormData] = useState(localStorage.getItem('formData') ? JSON.parse(localStorage.getItem('formData')) : {
     name: '',
     phone: '',
@@ -157,12 +158,18 @@ const InfographicDownloadPage = () => {
 
       const arrayBuffer = await response.arrayBuffer();
       const blob = new Blob([arrayBuffer], { type: 'image/png' });
-      const filess = new File([blob], 'downloaded_image.png', { type: 'image/png' });
+      const filess = new File([blob], `${infographic.title.toLowerCase().replaceAll(' ','_')}.png`, { type: 'image/png' });
       setBlobs(filess);
       console.log(filess)
       const link = URL.createObjectURL(blob);
       setDownloadLink(link);
-      setShowModal(true);
+      if(isShareOrDownload){
+        handleDownload();
+      }else{
+        handleShare()
+        // setShowModal(true);
+      }
+      // setShowModal(true);
       setGenerating(false);
     } catch (error) {
       toast.error('Error downloading infographic.');
@@ -182,7 +189,7 @@ const InfographicDownloadPage = () => {
   const handleDownload = () => {
     const link = document.createElement('a');
     link.href = downloadLink;
-    link.download = 'downloaded_image.png';
+    link.download = `${infographic.title.toLowerCase().replaceAll(' ','_')}.png`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -306,12 +313,22 @@ const InfographicDownloadPage = () => {
                   </label>
                 ))}
               </div>
-              <div >
-                <button type='submit' disabled={generating} className='bg-[#31A6C7] font-bold text-white px-8 py-2 mt-5 rounded-md hover:text-secondary hover:bg-white hover:border-secondary border-2 border-transparent transition-all'>{generating ? <><p><span className="loading-dots flex space-x-1">
+              <div className='flex gap-2' >
+              {generating ? <>
+                <button type='submit' disabled={generating} className='bg-[#31A6C7] font-bold text-white px-8 py-2 mt-5 rounded-md hover:text-secondary hover:bg-white hover:border-secondary border-2 border-transparent transition-all'>
+              <p><span className="loading-dots flex space-x-1">
                   <span className="dot animate-blink">Loading.</span>
                   <span className="dot animate-blink delay-200">.</span>
                   <span className="dot animate-blink delay-400">.</span>
-                </span></p></> : 'View'}</button>
+                </span></p></button></> :<>
+                <button type='submit' onClick={()=>setIsShareOrDownload(true)} disabled={generating} className='bg-[#31A6C7] font-bold text-white px-8 py-2 mt-5 rounded-md hover:text-secondary hover:bg-white hover:border-secondary border-2 border-transparent transition-all'>
+                  Download
+               </button>
+                <button type='submit' onClick={()=>setIsShareOrDownload(false)} disabled={generating} className='border-2 border-[#31A6C7] font-bold text-[#31A6C7] px-8 py-2 mt-5 rounded-md hover:text-white hover:bg-[#31A6C7] hover:border-secondary transition-all'>
+                  Share
+                  </button>
+                </>
+                }
               </div>
             </form>
           </div>

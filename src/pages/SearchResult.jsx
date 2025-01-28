@@ -26,7 +26,7 @@ const SearchPage = () => {
       setLoading(true)
       const encodedDescription = encodeURIComponent(description || '');
       const encodedCategory = encodeURIComponent(tag || '');
-      const response = await fetch(`https://utility.caclouddesk.com/api/infographics/search?description=${encodedDescription}&tag=${encodedCategory}&page=${page}`);
+      const response = await fetch(`https://utility.caclouddesk.com/api/infographics/search?description=${encodedDescription}&tag=${encodedCategory}&page=${page}&limit=12`);
       const data = await response.json();
       setInfographics(data.infographics);
       setTotalPages(data.totalPages);
@@ -59,6 +59,9 @@ const SearchPage = () => {
     [searchTerm],
     1000
   );
+  useEffect(() => {
+    setPage(1);
+  }, [ debouncedSearchTerm]);
 
   
   useEffect(() => {
@@ -86,7 +89,7 @@ const SearchPage = () => {
               <div className="relative flex">
                 <select
                   value={tag}
-                  onChange={(e) => setTag(e.target.value)}
+                  onChange={(e) => {setTag(e.target.value); setPage(1)}}
                   className="ml-2 relative m-0 block flex-auto rounded border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none"
                   aria-label="Select tag"
                 >
@@ -144,15 +147,17 @@ const SearchPage = () => {
             <button
               disabled={page <= 1}
               onClick={() => setPage(page - 1)}
-              className={`px-4 py-2 rounded ${page === 1 ? '' : 'text-white'}`}
+              className={`px-4 py-2 rounded flex items-center gap-2 ${page === 1 ? '' : 'text-white '}`}
             >
               <img src={arrow2} alt="" className={`w-8 rotate-180 ${page === 1 ? 'saturate-0' : ''}`} />
+              Previous
             </button>
             <button
               disabled={page >= totalPages}
               onClick={() => setPage(page + 1)}
-              className={`px-4 py-2 rounded`}
+              className={`px-4 py-2 rounded flex items-center gap-2`}
             >
+              Next
               <img src={arrow2} alt="" className={`w-8 ${page >= totalPages ? 'saturate-0' : ''}`} />
             </button>
           </div>
