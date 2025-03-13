@@ -12,6 +12,7 @@
   "dependencies": {
     "@scrrum-labs/gst-india-utils": "^1.0.16",
     "apitools": "file:",
+    "html2canvas": "^1.4.1",
     "js-big-decimal": "^2.0.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

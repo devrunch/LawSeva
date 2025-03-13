@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-unknown-property */
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import Trending from '../components/Sections/Trending';
 import { toast } from 'react-toastify';
@@ -10,6 +10,7 @@ import Modal from 'react-modal';
 import Common from '../components/Sections/Common';
 import PreviewComponent from '../components/PreviewComponent';
 import Infographics from '../components/InfographicsGrid';
+import html2canvas from 'html2canvas';
 const colors = [
   { name: 'red', hex: '#f87171' },
   { name: 'green', hex: '#34d399' },
@@ -48,6 +49,7 @@ const InfographicDownloadPage = () => {
   const [blobs, setBlobs] = useState(null);
   const [generating, setGenerating] = useState(false);
   const [isShareOrDownload, setIsShareOrDownload] = useState(false);
+  const previewRef = useRef(null);
   const [formData, setFormData] = useState(localStorage.getItem('formData') ? JSON.parse(localStorage.getItem('formData')) : {
     name: '',
     phone: '',
@@ -90,6 +92,11 @@ const InfographicDownloadPage = () => {
     fetchInfographic();
 }, []);
 
+  useEffect(() => {
+    if (generating) {
+      handleCapture();
+    }
+  }, [generating]);
 
   const fetchInfographic = async () => {
     try {
@@ -119,80 +126,81 @@ const InfographicDownloadPage = () => {
     }
   };
 
+  const capturePreview = async () => {
+    if (!previewRef.current) {
+      toast.error('Preview component not found');
+      return null;
+    }
+  
+    try {
+      const canvas = await html2canvas(previewRef.current, {
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: null,
+        scale: 2, // Higher quality
+      });
+      
+      return canvas;
+    } catch (error) {
+      console.error('Error capturing preview:', error);
+      toast.error('Error generating image');
+      return null;
+    }
+  };
+
+  const handleCapture = async () => {
+    try {
+      // Capture the preview component as an image
+      const canvas = await capturePreview();
+      
+      if (!canvas) {
+        setGenerating(false);
+        return;
+      }
+
+      // Convert canvas to blob
+      canvas.toBlob((blob) => {
+        const file = new File([blob], `${infographic.title.toLowerCase().replaceAll(' ','_')}.png`, { type: 'image/png' });
+        setBlobs(file);
+        
+        const link = URL.createObjectURL(blob);
+        setDownloadLink(link);
+        
+        if (isShareOrDownload) {
+          handleDownload(link, infographic.title);
+        } else {
+          handleShare();
+        }
+        
+        setGenerating(false);
+      }, 'image/png', 0.9);
+      
+    } catch (error) {
+      console.error('Error generating image:', error);
+      toast.error('Error generating infographic.');
+      setGenerating(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setGenerating(true);
-    let isLogo = true;
-    const formData = new FormData(e.target);
-    if (!selectedLogo && !customLogo) {
-      isLogo = false;
-    }
-    let logoBase64 = selectedLogo;
-    if (customLogo) {
-      logoBase64 = await convertToBase64(customLogo);
-    }
-
+    
     localStorage.setItem('formData', JSON.stringify({
-      name: formData.get('name'),
-      phone: formData.get('phone'),
-      email: formData.get('email')
+      name: formData.name,
+      phone: formData.phone,
+      email: formData.email
     }));
 
-    try {
-      const response = await fetch(`https://utility.caclouddesk.com/api/infographics/${id}/download`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          info: {
-            name: formData.get('name'),
-            phone: formData.get('phone'),
-            email: formData.get('email'),
-            isLogo: isLogo,
-            logoBase64: logoBase64,
-          },
-          bgColor: selectedColor,
-        })
-      });
-
-      const arrayBuffer = await response.arrayBuffer();
-      const blob = new Blob([arrayBuffer], { type: 'image/png' });
-      const filess = new File([blob], `${infographic.title.toLowerCase().replaceAll(' ','_')}.png`, { type: 'image/png' });
-      setBlobs(filess);
-      console.log(filess)
-      const link = URL.createObjectURL(blob);
-      setDownloadLink(link);
-      if(isShareOrDownload){
-        handleDownload();
-      }else{
-        handleShare()
-        // setShowModal(true);
-      }
-      // setShowModal(true);
-      setGenerating(false);
-    } catch (error) {
-      toast.error('Error downloading infographic.');
-      setGenerating(false);
-    }
+    setGenerating(true);
   };
 
-  const convertToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
-  };
-
-  const handleDownload = () => {
-    const link = document.createElement('a');
-    link.href = downloadLink;
-    link.download = `${infographic.title.toLowerCase().replaceAll(' ','_')}.png`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const handleDownload = (link = downloadLink, title = infographic?.title) => {
+    const downloadLink = document.createElement('a');
+    downloadLink.href = link;
+    downloadLink.download = `${title.toLowerCase().replaceAll(' ','_')}.png`;
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
     setShowModal(false);
   };
 
@@ -205,7 +213,9 @@ const InfographicDownloadPage = () => {
       <div className="container mx-auto my-10 p-4">
         <div className="container mx-auto p-4 flex flex-col lg:flex-row items-center justify-around">
           <div className="w-full lg:w-1/2 flex justify-center items-center">
-            <PreviewComponent imgLink={infographic.image} footerInfo={formData} bgColor={selectedColor} logo={customLogo?URL.createObjectURL(customLogo):selectedLogo}/>
+            <div ref={previewRef}>
+              <PreviewComponent generating={generating} imgLink={infographic.image} footerInfo={formData} bgColor={selectedColor} logo={customLogo?URL.createObjectURL(customLogo):selectedLogo}/>
+            </div>
           </div>
           <div className="w-full lg:w-1/2 mt-4 lg:mt-0 lg:ml-4 p-4 bg-white rounded-md">
             <h1 className="text-2xl font-bold mb-4 capitalize">{infographic.title}</h1>
@@ -321,7 +331,7 @@ const InfographicDownloadPage = () => {
                   <span className="dot animate-blink delay-200">.</span>
                   <span className="dot animate-blink delay-400">.</span>
                 </span></p></button></> :<>
-                <button type='submit' onClick={()=>setIsShareOrDownload(true)} disabled={generating} className='bg-[#31A6C7] font-bold text-white px-8 py-2 mt-5 rounded-md hover:text-secondary hover:bg-white hover:border-secondary border-2 border-transparent transition-all'>
+                <button type='submit' onClick={()=>{setIsShareOrDownload(true); }} disabled={generating} className='bg-[#31A6C7] font-bold text-white px-8 py-2 mt-5 rounded-md hover:text-secondary hover:bg-white hover:border-secondary border-2 border-transparent transition-all'>
                   Download
                </button>
                 <button type='submit' onClick={()=>setIsShareOrDownload(false)} disabled={generating} className='border-2 border-[#31A6C7] font-bold text-[#31A6C7] px-8 py-2 mt-5 rounded-md hover:text-white hover:bg-[#31A6C7] hover:border-secondary transition-all'>
@@ -363,7 +373,7 @@ const InfographicDownloadPage = () => {
           <div className='w-full flex justify-end gap-x-5'>
 
             <button
-              onClick={handleDownload}
+              onClick={() => handleDownload()}
               className="bg-[#31A6C7] text-white px-4 py-2 rounded-md hover:text-secondary hover:bg-white hover:border-secondary border-2 border-transparent transition-all"
             >
               Download

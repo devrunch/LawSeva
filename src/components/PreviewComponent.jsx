@@ -1,24 +1,26 @@
 /* eslint-disable react/prop-types */
-const PreviewComponent = ({ imgLink, footerInfo, bgColor ,logo}) => {
+const PreviewComponent = ({ imgLink, footerInfo, bgColor ,logo,generating}) => {
   return (
-    <div className="md:w-[540px] w-[360px] border-2 border-gray-200 shadow-md rounded-lg overflow-hidden">
+    <div className="md:w-[540px] w-[360px] overflow-hidden">
       <img
         src={`https://utility.caclouddesk.com/uploads/${imgLink}`}
         alt="Background"
         className="w-full h-auto object-cover"
+        crossOrigin="anonymous"
       />
       <div
         className={`w-full h-[100px] font-bold ${bgColor ? '' : 'bg-black'} flex justify-start gap-x-1 px-2 items-center`}
         style={{ backgroundColor: bgColor || '#000' }}
       >
-        <div className={`w-1/6 h-full flex justify-center items-center `}>
+        <div className={`w-1/6 flex justify-center items-center `}>
           <img
             src={logo || "https://as2.ftcdn.net/v2/jpg/04/78/56/33/1000_F_478563312_HuepEVbPHRGC0dsbXOXL1YSuFIkWEm2m.jpg"}
             alt="Logo"
-            className="w-[90%] h-auto  rounded-full bg-white"
+            className="w-[75%] h-auto  rounded-full bg-white"
+            crossOrigin="anonymous"
           />
         </div>
-        <div className="min-w-[50%] max-w-[80%] grid grid-cols-1 gap-y-1 text-white text-[16px]">
+        <div className={`min-w-[50%] max-w-[80%] h-full  flex flex-col justify-center items-stretch text-white text-[16px] ${generating?'-mt-3':''}`}>
           <div className={`flex items-center`}>
             <i className="fa fa-user mr-2"></i>
             <p>
